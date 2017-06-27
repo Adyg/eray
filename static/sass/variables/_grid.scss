@@ -1,0 +1,6 @@
+@import "singularitygs"; 
+
+@include add-grid(12);
+@include add-gutter(0);
+
+@include sgs-change('output', 'isolation');
