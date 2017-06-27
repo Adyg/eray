@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block body_class %}
+question-page community-page
+{% endblock body_class %}
+
+{% block content %}
+
+{% include 'eray/partials/_tab_menu.html' with active='tab-question' %}
+
+<div class="wrapper">
+    <div class="ask-question">
+        {% include 'partials/_messages.html' with form=post_question_form %}
+        <form method="POST" novalidate>
+            {% csrf_token %}
+            {% if post_question_form.non_field_errors %}
+                <div class="notification error">{{ post_question_form.non_field_errors }}</div>
+            {% endif %}
+            <div class="formfield">
+                <label for="title">Title</label>
+
+                {% if post_question_form.title.errors %}
+                    <div class="notification error">{{ post_question_form.title.errors }}</div>
+                {% endif %}
+
+                {{ post_question_form.title }}
+            </div>
+
+            <div class="formfield markdown">
+                {% if post_question_form.body.errors %}
+                    <div class="notification error">{{ post_question_form.body.errors }}</div>
+                {% endif %}
+
+                {{ post_question_form.body }}
+            </div>
+
+            <div class="formfield autocomplete" rel="{% url 'tag-autocomplete' %}">
+                <label for="question_tags">Tags</label>
+                {% if post_question_form.question_tags.errors %}
+                    <div class="notification error">{{ post_question_form.question_tags.errors }}</div>
+                {% endif %}
+
+                {{ post_question_form.question_tags }}
+            </div>
+
+            <button type="submit" class="button">Post</button>
+
+            <div class="formfield inline keep-private">
+                {% if post_question_form.is_private.errors %}
+                    <div class="notification error">{{ post_question_form.is_private.errors }}</div>
+                {% endif %}
+
+                {{ post_question_form.is_private }}
+                <label for="id_is_private">Keep it private?</label>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="wrapper">
+
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/highlight.js/latest/highlight.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/highlight.js/latest/styles/github.min.css">
+<link href="{% static 'css/vendor/simplemde.min.css' %}?v={% now "U" %}" rel="stylesheet">
+<script src="{% static 'js/vendor/simplemde.min.js' %}"></script>
+{% endblock extra_js %}

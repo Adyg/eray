@@ -1,0 +1,45 @@
+{% load staticfiles %}
+
+<li class="community-post">
+    <div class="community-post-wrap clearfix">
+        <div class="controls">
+            <ul class="clearfix">
+                <li class="views">
+                    <p class="count">{{ question.view_count }}</p>
+                    <p class="count-action">Views</p>
+                </li>
+                <li class="votes">
+                    <p class="count">{{ question.votes_count }}</p>
+                    <p class="count-action">Votes</p>
+                </li>
+                <li class="answers">
+                    <p class="count">{{ question.answer_count }}</p>
+                    <p class="count-action">Answers</p>
+                </li>
+            </ul>
+        </div>
+        <div class="post">
+            <h3><a href="{% url 'question' pk=question.pk %}">{{ question.title }}</a></h3>
+           <!-- <p class="post-body">Duis tincidunt urna non pretium porta. Nam condimentum vitae ligula vel ornare. Phasellus at semper turpis. Nunc eu tellus tortor. Etiam at condimentum nisl, vitae …</p> -->
+            <div class="post-info clearfix">
+                <ul class="tags clearfix">
+                    {% for tag in question.tags.all %}
+                        <li><a href="#">#{{ tag.name }}</a></li>
+                    {% endfor %}
+                </ul>
+                <div class="poster">
+                    <p class="label">Asked by</p>
+                    <div class="poster-details clearfix">
+                        <div class="avatar">
+                            <img src="{% static 'images/avatar-2.png' %}">
+                        </div>
+                        <div class="details">
+                            <a href="#">{{ question.user.username }}</a><!-- <span class="point-count">404</span> -->
+                            <p class="date">{{ question.created_at|date }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</li>

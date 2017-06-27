@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+
+    <div class="wrapper clearfix">
+      {% if is_authenticated == True %}
+        {% include 'eray/partials/_profile_box.html' with user=user %}
+      {% else %}
+        {% include 'eray/partials/_login_box.html' with login_form=login_form next_url=next_url %}
+      {% endif %}
+    </div>
+{% endblock content %}

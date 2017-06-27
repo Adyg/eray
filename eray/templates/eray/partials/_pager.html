@@ -1,0 +1,6 @@
+{% if pager.has_other_pages %}
+    <div class="pager">
+        <span>Page:</span>
+        {% for i in pager.paginator.page_range %}<a href="?page={{ i }}{% if order %}&order={{order}}{% endif %}">{{ i }}</a>{% if i != pager.paginator.end_index %}|{% endif %}{% endfor %}
+    </div>
+{% endif %}

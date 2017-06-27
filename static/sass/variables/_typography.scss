@@ -1,0 +1,38 @@
+/*
+ * Typography
+ *
+ *
+ * Preferred fonts are from OpenSans' family
+ *
+ * Web font family:
+ *   name: "Open Sans"
+ *   weights:
+ *      400 normal (regular)
+ *      700 bold   (bold)
+ *
+ */
+
+ /* font families */
+ $font_family_eray: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+ $font_family_code: Menlo, SFMono-Regular, Consolas, "Liberation Mono", Courier, monospace;
+ 
+ %type_eray {
+  font-family: $font_family_eray;
+}
+
+/* font usage */
+%type_main {
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: 0;
+}
+
+body {
+  @extend %type_eray;
+  @extend %type_main;  
+}
+
+button {
+    @extend %type_eray;
+}

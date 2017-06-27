@@ -1,0 +1,7 @@
+{% if messages %}
+    <div class="wrapper">
+        {% for message in messages %}
+            <div class="notification {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|safe }}</div>
+        {% endfor %}
+    </div>
+{% endif %}

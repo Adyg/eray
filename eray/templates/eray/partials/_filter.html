@@ -1,0 +1,11 @@
+<div class="filter">
+    <form method="GET" class="community-filter">
+        <select name="order">
+            <option>Sort questions by</option>
+            <option {% if order == 'answers' %}selected{% endif %} value="answers">Answers</option>
+            <option {% if order == 'date' %}selected{% endif %} value="date">Created date</option>
+            <option {% if order == 'views' %}selected{% endif %} value="views">Views</option>
+            <option {% if order == 'votes' %}selected{% endif %} value="votes">Votes</option>
+        </select>
+    </form>
+</div>

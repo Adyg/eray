@@ -1,0 +1,9 @@
+<div class="wrapper">
+    <div class="tabs">
+        <ul class="clearfix">
+            <li class="tab-latest {% if active == 'tab-latest' %}active{% endif %}"><a href="{% url 'community' %}">LATEST</a></li>
+            <li class="tab-browse {% if active == 'tab-browse' %}active{% endif %}"><a href="#">BROWSE TAGS</a></li>
+            <li class="tab-question {% if active == 'tab-question' %}active{% endif %}"><a href="{% url 'question' %}">ASK A QUESTION</a></li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+{% load staticfiles %}
+
+<!-- Start .login-box -->          
+<div class="box login-box logged-in">
+  <p class="greeting"><a href="#">Hello {{ user.first_name }}</a></p>
+  <p class="user-position">Your TS Account Specialist</p>
+
+  <div class="user-details clearfix">
+      <div class="user-avatar">
+          <img src="{% static 'images/avatar-3.jpg' %}">
+      </div>
+      <div class="user-name">
+          <p class="name"> {{ user.first_name }}  {{ user.last_name }}</p>
+          <p class="send-message"><a href="#">Send a Message</a></p>
+      </div>
+  </div>
+
+  <div class="user-actions clearfix">
+      <a href="#" class="settings-link">Settings</a>
+      <a href="{% url 'logout' %}" class="logout-link">Log Out</a>
+  </div>
+</div>
+<!-- End .login-box -->

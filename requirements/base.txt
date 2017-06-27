@@ -16,3 +16,4 @@ django-crispy-forms==1.6.1
 isort==4.2.5
 django-haystack==2.6.0
 pysolr==3.2.0
+mistune==0.7.4
