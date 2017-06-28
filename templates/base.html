@@ -3,9 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}eray{% endblock title %}</title>
-    <meta name="viewport" content="width=device-width">
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -14,7 +13,7 @@
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700,800" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 
     <!-- This file store project specific CSS -->
     <link href="{% static 'css/vendor/magicsuggest.css' %}?v={% now "U" %}" rel="stylesheet">
@@ -29,113 +28,41 @@
     {% block prewrap %}
     {% endblock prewrap %}
 
-    <div class="wrap">
-      <!-- Start .header -->
-      <div class="header">
-        <div class="wrapper clearfix">
-          <!-- Start .branding -->
-          <div class="branding">
-            <a class="logo" rel="home" id="logo" title="eray" href="/">
-              <img src="{% static 'images/eray-logo.png' %}" alt="eray">
-            </a>
-            <a class="logo_text" rel="home" title="eray" href="/">Eray</a>
-          </div>
-          <!-- End .branding -->
+    <!-- Start nav -->
+    <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse fixed-top">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="nav-link" href="#">Ask a question</a>
 
-          {% block navigation %}
-          <!-- Start .navigation -->
-          <div class="navigation clearfix">
-            <ul class="menu">
-              <li><a href="{% url 'documentation' %}">Documentation</a></li>
-              <li><a href="/">Tools</a></li>
-              <li><a href="{% url 'community' %}">Community</a></li>
-              <li><a href="/">Tests</a></li>
-            </ul>
-          </div>
-          <!-- End .navigation -->
-          {% endblock navigation %}
-
-          {% block search %}
-          <!-- Start .search -->
-          <div class="search">
-            <form action="" method="GET">
-              <div class="formfield search-input">
-                <input name="q" placeholder="Search eray Resources">
-                <button name="submit" type="submit">
-                  <img src="{% static 'images/icon-search.png' %}">
-                </button>
-              </div>
-            </form>
-          </div>
-          <!-- End .search -->
-          {% endblock search %}
-
-        </div>
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="text" placeholder="Look for a question">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
       </div>
-      <!-- End .header -->
+    </nav>
+    <!-- End nav -->
 
+    <div class="container">
       <!-- Start .content -->
-      <div class="content body-container">      
+      <div class="row content body-container">      
         {% include 'partials/_messages.html' %}
 
         {% block content %}
         {% endblock content %}
       </div>
       <!-- End .content -->
-
     </div>
 
     {% block postwrap %}
     {% endblock postwrap %}
 
-    <div class="wrapper clearfix">
-      <!-- Start .footer -->
-      <div class="footer">
-        <!-- Start .branding -->
-        <div class="branding">
-          <a class="logo" rel="home" id="logo" title="eray" href="/">
-            <img src="{% static 'images/eray-logo.png' %}" alt="eray">
-          </a>
-          <div class="branding-titles">
-            <a class="logo-title" rel="home" title="eray" href="/">Eray.COM</a>
-            <a class="logo-subtitle" rel="home" title="eray" href="/">Eray</a>
-          </div>
-        </div>
-        <!-- End .branding -->
-
-        <!-- Start .menu -->
-        <div class="menu">
-          <ul>
-            <li><a href="#">Log In</a></li>
-            <li><a href="#">Register</a></li>
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="#">About Eray</a></li>
-          </ul>
-        </div>
-        <!-- End .menu -->
-
-        <!-- Start .search -->
-        <div class="search">
-          <form action="" method="GET">
-            <div class="formfield search-input">
-              <input name="q" placeholder="Search Eray Resources">
-              <button name="submit" type="submit">
-                <img src="{% static 'images/icon-search.png' %}">
-              </button>
-            </div>
-          </form>
-        </div>
-        <!-- End .search -->
-
-        <div class="copyright clearboth">
-          <p>&nbsp;</p>
-        </div>
-      </div>
-      <!-- End .footer -->
-    </div>
 
     {% block extra_js %}{% endblock extra_js %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     <script src="{% static 'js/vendor/magicsuggest.min.js' %}"></script>    
     <script src="{% static 'js/main.js' %}"></script>    
   </body>

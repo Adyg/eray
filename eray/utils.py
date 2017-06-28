@@ -1,4 +1,4 @@
-from urllib.parse import urlparse
+from urlparse import urlparse
 
 from django.shortcuts import reverse
     
