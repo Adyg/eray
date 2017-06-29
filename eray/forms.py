@@ -10,18 +10,17 @@ class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
 
-        self.fields['username'].widget.attrs['class'] = 'text'
-        self.fields['password'].widget.attrs['class'] = 'text'
+        self.fields['username'].widget.attrs['class'] = 'form-control'
+        self.fields['password'].widget.attrs['class'] = 'form-control'
+
+        self.fields['username'].widget.attrs['placeholder'] = 'Username'
+        self.fields['password'].widget.attrs['placeholder'] = 'Password'
 
 
 class PostQuestion(forms.ModelForm):
     """
     Form that handles creating questions for the regular users
     """
-
-    # the Is Private checkbox. If checked, it should set the Question.status field to Private
-    is_private = forms.BooleanField(required=False)
-
     # the Tag autocomplete input. It will populate the Question.tags field
     question_tags = forms.CharField()
 
@@ -30,10 +29,10 @@ class PostQuestion(forms.ModelForm):
 
         # ensure the title is not longer than the length the field allows
         self.fields['title'] = forms.CharField(max_length=Question._meta.get_field('title').max_length)
-
-        self.fields['title'].widget.attrs['class'] = 'text'
+        self.fields['title'].widget.attrs['class'] = 'form-control'
         self.fields['title'].widget.attrs['placeholder'] = 'What\'s your question?'
-        self.fields['question_tags'].widget.attrs['class'] = 'text'
+
+        self.fields['question_tags'].widget.attrs['class'] = 'form-control'
         self.fields['question_tags'].widget.attrs[
             'placeholder'] = 'Provide at least one tag for your question, separate tags by comma'
 

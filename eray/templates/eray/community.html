@@ -7,35 +7,10 @@ community-page
 {% endblock body_class %}
 
 {% block content %}
-<div class="wrapper">
-    <div class="header header-community">
-        <h1>Welcome!</h1>
-        <h2>In hac habitasse platea dictumst. Vivamus adipiscing fermentum quam volutpat aliquam</h2>
-    </div>
-</div>
 
-{% include 'eray/partials/_tab_menu.html' with active='tab-latest' %}
-
-<div class="wrapper">
-    <div class="controls clearfix">
-        {% include 'eray/partials/_filter.html' with order=order %}
-
-        {% include 'eray/partials/_pager.html' with pager=questions order=order %}
-    </div>
-</div>
-
-<div class="wrapper wrapper-community-posts">
-        <ul class="community-posts">
-            {% for question in questions %}
-                {% include 'eray/partials/_question.html' with question=question date_format=date_format %}
-            {% endfor %}
-        </ul>
-    </div>
-</div>
-
-<div class="wrapper">
-    <div class="controls clearfix controls-bottom">
-        <div class="controls-wrap">
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
             {% include 'eray/partials/_filter.html' with order=order %}
 
             {% include 'eray/partials/_pager.html' with pager=questions order=order %}
@@ -43,14 +18,24 @@ community-page
     </div>
 </div>
 
-<div class="wrapper">
-    <div class="footer-banner clearfix">
-        <div class="titles">
-            <h1>Primary headline</h1>
-            <h2>Secondary headline</h2>
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="community-posts">
+                {% for question in questions %}
+                    {% include 'eray/partials/_question.html' with question=question date_format=date_format %}
+                {% endfor %}
+            </ul>
         </div>
-        <div class="actions">
-            <a href="#">Explore</a>
+    </div>
+</div>
+
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'eray/partials/_filter.html' with order=order %}
+
+            {% include 'eray/partials/_pager.html' with pager=questions order=order %}
         </div>
     </div>
 </div>

@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+    {% include 'eray/partials/_login_box.html' with login_form=login_form next_url=next_url %}
+{% endblock content %}

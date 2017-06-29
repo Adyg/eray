@@ -1,25 +1,23 @@
 {% load staticfiles %}
 
-<!-- Start .login-box -->          
-<div class="box login-box">
-  <p class="greeting">Welcome!</p>
-  <form method="POST" action="{% url 'login' %}?next={{ next_url }}">
-    {% csrf_token %}
-    <div class="formfield">
-      <label for="username">Username/Email</label>
-      {{ login_form.username }}
+<!-- Start login box -->          
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <p class="greeting">Please sign in</p>
+      <form method="POST" action="{% url 'login' %}?next={{ next_url }}" class="">
+        {% csrf_token %}
+
+        {% include 'eray/partials/forms/_formfield.html' with field=login_form.username label='Username/Email' for='username' %}
+        {% include 'eray/partials/forms/_formfield.html' with field=login_form.password label='Password' for='password' %}
+
+        <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+      </form>
+      <div class="auth-actions">
+        <a href="#">Forgot Password</a><br/>
+        <a href="#">Register</a>
+      </div>
     </div>
-    <div class="formfield">
-      <label for="password">Password</label>
-      {{ login_form.password }}
-    </div>
-    <div class="form-action">
-      <button type="submit" name="submit" class="cta">Log In</button>
-    </div>
-  </form>
-  <div class="auth-actions">
-    <a href="#">Forgot Password</a><br/>
-    <a href="#">Register</a>
   </div>
 </div>
-<!-- End .login-box -->
+<!-- End login box -->

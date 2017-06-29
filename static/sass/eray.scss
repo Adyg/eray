@@ -4,5 +4,11 @@
 @import "variables/typography";
 
 body {
-    padding-top: 5rem;
+    padding-top: 8rem;
+}
+
+.form-signin {
+    margin: 0 auto;
+    max-width: 330px;
+    padding: 15px;
 }

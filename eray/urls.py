@@ -22,15 +22,14 @@ urlpatterns = [
 
     # placeholders
     url(r'^$', eray_views.homepage, name='home'),
-    url(r'^accounts/login/$', eray_views.homepage, name='homepage-login'),
     url(r'^documentation/$', eray_views.documentation, name='documentation'),
 
     # auth
-    url(r'^login/$', eray_views.login, name='login'),
+    url(r'^accounts/login/$', eray_views.login, name='login'),
     url(r'^logout/$', eray_views.logout, name='logout'),
 
     # post question
-    url(r'^post-question/$', eray_views.post_question, name='question'),
+    url(r'^ask/$', eray_views.post_question, name='question'),
 
     # tag autocomplete, called via AJAX
     url(r'^tag-autocomplete/$', eray_views.tag_autocomplete, name='tag-autocomplete'),

@@ -3,22 +3,6 @@
 var Eray = { };
 
 (function ( $ ) {
-
-    /**
-    * Handles toggling visibility for the Documentation sidebar menu
-    *
-    * @param $container     sidebar menu wrapper
-    */
-    Eray.collapsibleMenu = function($container) {
-        $container.find(' > ul > li > a').on('click', function(e){
-            e.preventDefault();
-            var $this = $(this),
-                $parent = $this.parents('li:first');
-
-            $parent.toggleClass('expanded');
-        });
-    }
-
     /**
     * Handle tag autocomplete functionality
     *
@@ -143,7 +127,6 @@ var Eray = { };
 
 
     Eray.initAll = function() {
-        Eray.collapsibleMenu($('.sidebar-menu'));
         Eray.autocomplete($('.autocomplete'));
         Eray.markdown($('.markdown textarea'));
         Eray.communityFilter($('.community-filter select'));

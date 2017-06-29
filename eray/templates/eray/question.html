@@ -8,77 +8,78 @@ question-page community-page
 
 {% block content %}
 
-{% include 'eray/partials/_tab_menu.html' with active='none' %}
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
 
-<div class="wrapper wrapper-question clearfix">
-    <div class="question-wrap clearfix">
-        <div class="question-info">
-            <div class="question-stats">
-                <div class="controls">
-                    <a href="{% url 'vote-up' pk=question.pk %}" class="vote vote-up"><img src="{% static 'images/icon-vote-up.png' %}"></a>
-                    <ul class="clearfix">
-                        <li class="views">
-                            <p class="count">{{ question.view_count }}</p>
-                            <p class="count-action">Views</p>
-                        </li>
-                        <li class="votes">
-                            <p class="count">{{ question.votes_count }}</p>
-                            <p class="count-action">Votes</p>
-                        </li>
-                        <li class="answers">
-                            <p class="count">{{ question.answer_count }}</p>
-                            <p class="count-action">Answers</p>
-                        </li>
-                    </ul>
-                    <a href="{% url 'vote-down' pk=question.pk %}" class="vote vote-down"><img src="{% static 'images/icon-vote-down.png' %}"></a>
-                </div>            
-            </div>
-            <div class="question-tags">
-                <ul class="tags clearfix">
-                    {% for tag in question.tags.all %}
-                        <li><a href="#">#{{ tag.name }}</a></li>
-                    {% endfor %}
-                </ul>        
-            </div>
-        </div>
-
-        <div class="question-details">
-            <h1>{{ question.title }}</h1>
-            <div class="poster-details clearfix">
-                <div class="poster">
-                    <p class="label">Asked by</p>
-                    <div class="poster-details clearfix">
-                        <div class="avatar">
-                            <img src="{% static 'images/avatar-2.png' %}">
-                        </div>
-                        <div class="details">
-                            <a href="#">{{ question.user.username }}</a><!-- <span class="point-count">404</span> -->
-                            <p class="date time-ago">{{ question.created_at|timesince|ts_timesince:',' }} ago</p>
-                        </div>
-                    </div>
-                </div>            
-            </div>
-            <div class="question-body-wrap">
-                <div class="question-body markdown-body">
-                    {{ question.body|markdownify }}
-                </div>
-
-                <div class="comments-wrap">
-                    <ul>
-                        {% for comment in question.get_comments %}
-                            <li>
-                                {{ comment.body }} <a href="#">{{ comment.user.username }}</a> <span class="comment-date">{{ comment.created_at|date }}</span>
+            <div class="question-info">
+                <div class="question-stats">
+                    <div class="controls">
+                        <a href="{% url 'vote-up' pk=question.pk %}" class="vote vote-up"><img src="{% static 'images/icon-vote-up.png' %}"></a>
+                        <ul class="clearfix">
+                            <li class="views">
+                                <p class="count">{{ question.view_count }}</p>
+                                <p class="count-action">Views</p>
                             </li>
+                            <li class="votes">
+                                <p class="count">{{ question.votes_count }}</p>
+                                <p class="count-action">Votes</p>
+                            </li>
+                            <li class="answers">
+                                <p class="count">{{ question.answer_count }}</p>
+                                <p class="count-action">Answers</p>
+                            </li>
+                        </ul>
+                        <a href="{% url 'vote-down' pk=question.pk %}" class="vote vote-down"><img src="{% static 'images/icon-vote-down.png' %}"></a>
+                    </div>            
+                </div>
+                <div class="question-tags">
+                    <ul class="tags clearfix">
+                        {% for tag in question.tags.all %}
+                            <li><a href="#">#{{ tag.name }}</a></li>
                         {% endfor %}
-                    </ul>
-                    <a href="#" class="add-comment">Add a comment</a>
-                    <div class="comment-form">
-                        <form action="{% url 'question-comment' %}" method="POST">{% csrf_token %}
-                            <textarea name="body"></textarea>
-                            <input type="hidden" value="{{ question.pk }}" name="question">
-                            <div class="error"></div>
-                            <button type="submit" class="button">Post</button>
-                        </form>
+                    </ul>        
+                </div>
+            </div>
+
+            <div class="question-details">
+                <h1>{{ question.title }}</h1>
+                <div class="poster-details clearfix">
+                    <div class="poster">
+                        <p class="label">Asked by</p>
+                        <div class="poster-details clearfix">
+                            <div class="avatar">
+                                <img src="{% static 'images/avatar-2.png' %}">
+                            </div>
+                            <div class="details">
+                                <a href="#">{{ question.user.username }}</a><!-- <span class="point-count">404</span> -->
+                                <p class="date time-ago">{{ question.created_at|timesince|ts_timesince:',' }} ago</p>
+                            </div>
+                        </div>
+                    </div>            
+                </div>
+                <div class="question-body-wrap">
+                    <div class="question-body markdown-body">
+                        {{ question.body|markdownify }}
+                    </div>
+
+                    <div class="comments-wrap">
+                        <ul>
+                            {% for comment in question.get_comments %}
+                                <li>
+                                    {{ comment.body }} <a href="#">{{ comment.user.username }}</a> <span class="comment-date">{{ comment.created_at|date }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <a href="#" class="add-comment">Add a comment</a>
+                        <div class="comment-form">
+                            <form action="{% url 'question-comment' %}" method="POST">{% csrf_token %}
+                                <textarea name="body"></textarea>
+                                <input type="hidden" value="{{ question.pk }}" name="question">
+                                <div class="error"></div>
+                                <button type="submit" class="button">Post</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

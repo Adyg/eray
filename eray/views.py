@@ -15,25 +15,17 @@ from eray.models import (Tag, Question, Answer,)
 
 
 def homepage(request):
-    login_form = False
-    is_authenticated = bool(request.user.is_authenticated())
-
-    # the user can end up on the homepage after a @login_required decorator kicked in
-    # if so, make sure we can redirect to the URL where the login request originated
-    next_url = request.GET.get('next', reverse('home'))
-
-    if not is_authenticated:
-        login_form = LoginForm()
 
     return render(request, 'eray/homepage.html', {
-        'login_form': login_form,
-        'is_authenticated': is_authenticated,
-        'next_url': next_url,
     })
 
 
 def login(request):
     auth_logout(request)
+    login_form = LoginForm()
+
+    # URL the user came from, we'll redirect back to it after login
+    next_url = request.GET.get('next', reverse('home'))
 
     if request.method == 'POST':
         login_form = LoginForm(data=request.POST)
@@ -49,11 +41,14 @@ def login(request):
                     next_url = request.GET.get('next', reverse('home'))
 
                     return redirect(next_url)
+        else:
+            messages.add_message(request, messages.ERROR,
+                                 'Login failed. Please check the email and password and try again or use the <a href="#">forgot password</a> form to reset your password.')
 
-    messages.add_message(request, messages.ERROR,
-                         'Login failed. Please check the email and password and try again or use the <a href="#">forgot password</a> form to reset your password.')
-
-    return redirect(reverse('home'))
+    return render(request, 'eray/login.html', {
+        'login_form': login_form,
+        'next_url': next_url,
+    })
 
 
 def logout(request):
@@ -147,10 +142,12 @@ def community(request):
         # Coalesce will be used below to avoid NULL values interfering with the ordering
         # Track https://code.djangoproject.com/ticket/10929 for future alternatives
         if order == 'votes':
-            question_list = question_list.annotate(total_votes=Coalesce(Sum('vote__basevote__value'), 0)).order_by('-total_votes')
+            question_list = question_list.annotate(total_votes=Coalesce(
+                Sum('vote__basevote__value'), 0)).order_by('-total_votes')
 
         if order == 'views':
-            question_list = question_list.annotate(total_views=Coalesce(Sum('view__baseview__value'), 0)).order_by('-total_views')
+            question_list = question_list.annotate(total_views=Coalesce(
+                Sum('view__baseview__value'), 0)).order_by('-total_views')
 
         if order == 'answers':
             question_list = question_list.annotate(total_answers=Coalesce(Sum('answer'), 0)).order_by('-total_answers')
@@ -164,7 +161,7 @@ def community(request):
     except EmptyPage:
         questions = paginator.page(paginator.num_pages)
 
-    return render(request, 'eray/community.html', { 
+    return render(request, 'eray/community.html', {
         'questions': questions,
         'date_format': settings.DATE_FORMAT,
         'order': order,
@@ -196,7 +193,7 @@ def question(request, pk):
 
             messages.add_message(request, messages.INFO, 'Answer successfully created.')
 
-            return redirect(reverse('question', kwargs={ 'pk': question.pk }))
+            return redirect(reverse('question', kwargs={'pk': question.pk}))
 
     if request.user.is_superuser:
         question_answers = question.answer_set.all()
@@ -263,7 +260,7 @@ def vote_up_answer(request, pk):
             answer.vote(request.user, 1)
 
             return HttpResponse(answer.votes_count())
-    
+
     return HttpResponse('')
 
 
@@ -298,16 +295,16 @@ def question_comment(request):
 
     if not comment:
 
-        return JsonResponse({ 'failed': True, 'message': 'Please write a comment.' })
+        return JsonResponse({'failed': True, 'message': 'Please write a comment.'})
 
     if len(comment) < 15 or len(comment) > 400:
 
-        return JsonResponse({ 'failed': True, 'message': 'Please write a comment that has between 15 and 400 characters.' })
+        return JsonResponse({'failed': True, 'message': 'Please write a comment that has between 15 and 400 characters.'})
 
     question = get_object_or_404(Question, pk=question_pk)
     question.add_comment(comment, user)
 
-    return JsonResponse({ 'success': True, 'message': comment })
+    return JsonResponse({'success': True, 'message': comment})
 
 
 @login_required
@@ -322,13 +319,13 @@ def answer_comment(request):
 
     if not comment:
 
-        return JsonResponse({ 'failed': True, 'message': 'Please write a comment.' })
+        return JsonResponse({'failed': True, 'message': 'Please write a comment.'})
 
     if len(comment) < 15 or len(comment) > 400:
 
-        return JsonResponse({ 'failed': True, 'message': 'Please write a comment that has between 15 and 400 characters.' })
+        return JsonResponse({'failed': True, 'message': 'Please write a comment that has between 15 and 400 characters.'})
 
     answer = get_object_or_404(Answer, pk=answer_pk)
     answer.add_comment(comment, user)
 
-    return JsonResponse({ 'success': True, 'message': comment })    
+    return JsonResponse({'success': True, 'message': comment})

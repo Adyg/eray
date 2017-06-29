@@ -1,0 +1,9 @@
+<div class="form-group {% if field.errors %}has-errors{% endif %} {{ wrapper_classes }}">
+    <label for="id_{{ for }}">{{ label }}</label>
+     <div class="danger">
+        {% for error in field.errors %}
+            <p class="text-danger">{{ error }}</p>
+        {% endfor %}
+    </div>
+    {{ field }}
+</div>

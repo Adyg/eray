@@ -8,54 +8,29 @@ question-page community-page
 
 {% block content %}
 
-{% include 'eray/partials/_tab_menu.html' with active='tab-question' %}
+<div class="content">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="ask-question">
+                {% include 'partials/_messages.html' with form=post_question_form %}
+                <form method="POST" novalidate>
+                    {% csrf_token %}
+                    {% if post_question_form.non_field_errors %}
+                        <div class="notification error">{{ post_question_form.non_field_errors }}</div>
+                    {% endif %}
 
-<div class="wrapper">
-    <div class="ask-question">
-        {% include 'partials/_messages.html' with form=post_question_form %}
-        <form method="POST" novalidate>
-            {% csrf_token %}
-            {% if post_question_form.non_field_errors %}
-                <div class="notification error">{{ post_question_form.non_field_errors }}</div>
-            {% endif %}
-            <div class="formfield">
-                <label for="title">Title</label>
+                    {% include 'eray/partials/forms/_formfield.html' with field=post_question_form.title label='Title' for='title' %}
 
-                {% if post_question_form.title.errors %}
-                    <div class="notification error">{{ post_question_form.title.errors }}</div>
-                {% endif %}
+                    {% include 'eray/partials/forms/_formfield.html' with field=post_question_form.body label='Question' for='body' wrapper_classes='markdown' %}
 
-                {{ post_question_form.title }}
+                    <div class="autocomplete" rel="{% url 'tag-autocomplete' %}">
+                        {% include 'eray/partials/forms/_formfield.html' with field=post_question_form.question_tags label='Tags' for='question_tags' %}
+                    </div>
+
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </form>
             </div>
-
-            <div class="formfield markdown">
-                {% if post_question_form.body.errors %}
-                    <div class="notification error">{{ post_question_form.body.errors }}</div>
-                {% endif %}
-
-                {{ post_question_form.body }}
-            </div>
-
-            <div class="formfield autocomplete" rel="{% url 'tag-autocomplete' %}">
-                <label for="question_tags">Tags</label>
-                {% if post_question_form.question_tags.errors %}
-                    <div class="notification error">{{ post_question_form.question_tags.errors }}</div>
-                {% endif %}
-
-                {{ post_question_form.question_tags }}
-            </div>
-
-            <button type="submit" class="button">Post</button>
-
-            <div class="formfield inline keep-private">
-                {% if post_question_form.is_private.errors %}
-                    <div class="notification error">{{ post_question_form.is_private.errors }}</div>
-                {% endif %}
-
-                {{ post_question_form.is_private }}
-                <label for="id_is_private">Keep it private?</label>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
