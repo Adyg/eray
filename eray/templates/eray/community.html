@@ -8,35 +8,29 @@ community-page
 
 {% block content %}
 
-<div class="content">
-    <div class="row">
-        <div class="col-md-12">
-            {% include 'eray/partials/_filter.html' with order=order %}
+<div class="row">
+    <div class="col-md-12">
+        {% include 'eray/partials/_filter.html' with order=order %}
 
-            {% include 'eray/partials/_pager.html' with pager=questions order=order %}
-        </div>
+        {% include 'eray/partials/_pager.html' with pager=questions order=order %}
     </div>
 </div>
 
-<div class="content">
-    <div class="row">
-        <div class="col-md-12">
-            <ul class="community-posts">
-                {% for question in questions %}
-                    {% include 'eray/partials/_question.html' with question=question date_format=date_format %}
-                {% endfor %}
-            </ul>
-        </div>
+<div class="row">
+    <div class="col-md-12">
+        <ul class="community-posts">
+            {% for question in questions %}
+                {% include 'eray/partials/_question.html' with question=question date_format=date_format %}
+            {% endfor %}
+        </ul>
     </div>
 </div>
 
-<div class="content">
-    <div class="row">
-        <div class="col-md-12">
-            {% include 'eray/partials/_filter.html' with order=order %}
+<div class="row">
+    <div class="col-md-12">
+        {% include 'eray/partials/_filter.html' with order=order %}
 
-            {% include 'eray/partials/_pager.html' with pager=questions order=order %}
-        </div>
+        {% include 'eray/partials/_pager.html' with pager=questions order=order %}
     </div>
 </div>
 {% endblock content %}

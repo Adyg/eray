@@ -22,7 +22,6 @@ urlpatterns = [
 
     # placeholders
     url(r'^$', eray_views.homepage, name='home'),
-    url(r'^documentation/$', eray_views.documentation, name='documentation'),
 
     # auth
     url(r'^accounts/login/$', eray_views.login, name='login'),
@@ -33,9 +32,6 @@ urlpatterns = [
 
     # tag autocomplete, called via AJAX
     url(r'^tag-autocomplete/$', eray_views.tag_autocomplete, name='tag-autocomplete'),
-
-    # question listing page
-    url(r'^community/$', eray_views.community, name='community'),
 
     # question detail page
     url(r'^question/(?P<pk>\d+)/$', eray_views.question, name='question'),

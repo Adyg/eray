@@ -4,6 +4,29 @@
 
 {% block content %}
 
-    <div class="wrapper clearfix">
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'eray/partials/_filter.html' with order=order %}
+
+            {% include 'eray/partials/_pager.html' with pager=questions order=order %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 question-list">
+            <ul class="community-posts">
+                {% for question in questions %}
+                    {% include 'eray/partials/_question.html' with question=question date_format=date_format %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'eray/partials/_filter.html' with order=order %}
+
+            {% include 'eray/partials/_pager.html' with pager=questions order=order %}
+        </div>
     </div>
 {% endblock content %}

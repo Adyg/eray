@@ -1,8 +1,25 @@
 {% load staticfiles %}
 
 <li class="community-post">
-    <div class="community-post-wrap clearfix">
-        <div class="controls">
+    <div class="community-post-wrap clearfix row">
+        <!-- Start .post -->
+        <div class="post col-md-8">
+            <h3><a href="{% url 'question' pk=question.pk %}">{{ question.title }}</a></h3>
+            <div class="post-info clearfix">
+                <ul class="tags pull-left">
+                    {% for tag in question.tags.all %}
+                        <li><a href="#">#{{ tag.name }}</a></li>
+                    {% endfor %}
+                </ul>
+                <div class="poster pull-right">
+                    <p>Asked by <a href="#">{{ question.user.username }}</a> @{{ question.created_at|date }}</p>
+                </div>
+            </div>
+        </div>
+        <!-- End .post -->
+
+        <!-- Start .controls -->
+        <div class="controls col-md-4">
             <ul class="clearfix">
                 <li class="views">
                     <p class="count">{{ question.view_count }}</p>
@@ -18,28 +35,6 @@
                 </li>
             </ul>
         </div>
-        <div class="post">
-            <h3><a href="{% url 'question' pk=question.pk %}">{{ question.title }}</a></h3>
-           <!-- <p class="post-body">Duis tincidunt urna non pretium porta. Nam condimentum vitae ligula vel ornare. Phasellus at semper turpis. Nunc eu tellus tortor. Etiam at condimentum nisl, vitae …</p> -->
-            <div class="post-info clearfix">
-                <ul class="tags clearfix">
-                    {% for tag in question.tags.all %}
-                        <li><a href="#">#{{ tag.name }}</a></li>
-                    {% endfor %}
-                </ul>
-                <div class="poster">
-                    <p class="label">Asked by</p>
-                    <div class="poster-details clearfix">
-                        <div class="avatar">
-                            <img src="{% static 'images/avatar-2.png' %}">
-                        </div>
-                        <div class="details">
-                            <a href="#">{{ question.user.username }}</a><!-- <span class="point-count">404</span> -->
-                            <p class="date">{{ question.created_at|date }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- End .controls -->
     </div>
 </li>
