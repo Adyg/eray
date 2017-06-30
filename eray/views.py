@@ -26,22 +26,24 @@ def homepage(request):
     else:
         question_list = Question.all_objects.filter(Q(status='A') | Q(user=request.user))
 
+    # Coalesce will be used below to avoid NULL values interfering with the ordering
+    # Track https://code.djangoproject.com/ticket/10929 for future alternatives
+    question_list = question_list.annotate(total_votes=Coalesce(
+                 Sum('vote__basevote__value'), 0)).annotate(total_views=Coalesce(
+                 Sum('view__baseview__value'), 0)).annotate(total_answers=Coalesce(Sum('answer'), 0))
+
     if order:
         if order == 'date':
             question_list = question_list.order_by('-created_at')
 
-        # Coalesce will be used below to avoid NULL values interfering with the ordering
-        # Track https://code.djangoproject.com/ticket/10929 for future alternatives
         if order == 'votes':
-            question_list = question_list.annotate(total_votes=Coalesce(
-                Sum('vote__basevote__value'), 0)).order_by('-total_votes')
+            question_list = question_list.order_by('-total_votes')
 
         if order == 'views':
-            question_list = question_list.annotate(total_views=Coalesce(
-                Sum('view__baseview__value'), 0)).order_by('-total_views')
+            question_list = question_list.order_by('-total_views')
 
         if order == 'answers':
-            question_list = question_list.annotate(total_answers=Coalesce(Sum('answer'), 0)).order_by('-total_answers')
+            question_list = question_list.order_by('-total_answers')
 
     paginator = Paginator(question_list, 10)
 
