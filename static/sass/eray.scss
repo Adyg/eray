@@ -37,3 +37,42 @@ body {
     border-bottom: 1px solid #ccc;
     padding: 20px;
 }
+
+.question-stats {
+    
+    ul {
+        padding: 0;
+    }
+
+    .controls,
+    li {
+        text-align: center;
+    }
+
+    li {
+        width: 60px;
+    }
+}
+
+.vote {
+    span {
+        font-size: 3em;
+    }
+}
+
+.poster-details {
+    text-align: right;
+}
+
+.comment-form {
+    display: none;
+
+    &.active {
+        display: block;
+    }
+
+    textarea {
+        height: 100px;
+        width: 100%;
+    }
+}

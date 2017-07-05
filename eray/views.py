@@ -2,7 +2,6 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
-from django.core.paginator import Paginator
 from django.core.urlresolvers import reverse
 from django.db.models import Avg, Max, Min, Sum, Q
 from django.db.models.functions import Coalesce
@@ -12,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from eray.forms import PostQuestion, PostAnswer, LoginForm
 from eray.models import (Tag, Question, Answer,)
+from eray.lib.eray_paginator import ErayPaginator
 
 
 def homepage(request):
@@ -47,7 +47,7 @@ def homepage(request):
         if order == 'answers':
             question_list = question_list.order_by('-total_answers')
 
-    paginator = Paginator(question_list, 10)
+    paginator = ErayPaginator(question_list, 10)
 
     try:
         questions = paginator.page(page)
