@@ -23,8 +23,10 @@ def homepage(request):
 
     if request.user.is_superuser:
         question_list = Question.all_objects.all()
-    else:
+    elif request.user.is_authenticated:
         question_list = Question.all_objects.filter(Q(status='A') | Q(user=request.user))
+    else:
+        question_list = Question.all_objects.filter(status='A')
 
     # Coalesce will be used below to avoid NULL values interfering with the ordering
     # Track https://code.djangoproject.com/ticket/10929 for future alternatives
