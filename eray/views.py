@@ -243,7 +243,7 @@ def vote_up_answer(request, pk):
         if answer:
             answer.vote(request.user, 1)
 
-            return HttpResponse(answer.votes_count())
+            return HttpResponse(answer.vote_count)
 
     return HttpResponse('')
 
@@ -262,7 +262,7 @@ def vote_down_answer(request, pk):
         if answer:
             answer.vote(request.user, -1)
 
-            return HttpResponse(answer.votes_count())
+            return HttpResponse(answer.vote_count)
 
     return HttpResponse('')
 

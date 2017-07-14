@@ -30,6 +30,54 @@ class BaseContent(models.Model):
     class Meta:
         abstract = True
 
+    def vote(self, user, vote_value=1):
+        """Add a vote from a user
+        """
+
+        # check if the user already voted
+        vote = self.vote_set.filter(basevote__user__pk=user.pk)
+
+        if vote:
+            base_votes = vote[0].basevote_set.all()
+            for base_vote in base_votes:
+                base_vote.value = vote_value
+                base_vote.save()
+        else:
+            vote = Vote.objects.create(answer=self)
+            vote.save()
+            base_vote = BaseVote.objects.create(parent=vote, user=user, value=vote_value)
+            base_vote.save()
+
+    def get_comments(self):
+        """Return the question's comments
+        """
+        comments = self.comment_set.all()
+        base_comments = BaseComment.objects.filter(parent__in=comments)
+
+        return base_comments
+
+    def add_comment(self, body, user):
+        """Add a new Comment related to this object
+        """
+        comment = Comment.objects.create(answer=self)
+        comment.save()
+        base_comment = BaseComment.objects.create(body=body, user=user, parent=comment)
+        base_comment.save()
+
+        return comment
+
+    def track_view(self, user):
+        """Add a new View related to this object
+        """
+        # check if the user already viewed the question
+        view = self.view_set.filter(baseview__user__pk=user.pk)
+
+        if not view:
+            view = View.objects.create(question=self)
+            view.save()
+            base_view = BaseView.objects.create(parent=view, user=user)
+            base_view.save()            
+
 
 class AllTagManager(models.Manager):
     """
@@ -129,40 +177,6 @@ class Question(BaseContent):
         """
         return self.answer_set.all().count()
 
-    def get_comments(self):
-        """Return the question's comments
-        """
-        comments = self.comment_set.all()
-        base_comments = BaseComment.objects.filter(parent__in=comments)
-
-        return base_comments
-
-    def vote(self, user, vote_value=1):
-        """Add a vote from a user
-        """
-
-        # check if the user already voted
-        vote = self.vote_set.filter(basevote__user__pk=user.pk)
-
-        if vote:
-            base_votes = vote[0].basevote_set.all()
-            for base_vote in base_votes:
-                base_vote.value = vote_value
-                base_vote.save()
-        else:
-            vote = Vote.objects.create(question=self)
-            vote.save()
-            base_vote = BaseVote.objects.create(parent=vote, user=user, value=vote_value)
-            base_vote.save()
-
-    def add_comment(self, body, user):
-        comment = Comment.objects.create(question=self)
-        comment.save()
-        base_comment = BaseComment.objects.create(body=body, user=user, parent=comment)
-        base_comment.save()
-
-        return comment
-
     def related_questions(self):
 
         return Question.objects.all().order_by('?')[:4]
@@ -183,16 +197,6 @@ class Question(BaseContent):
             questions.append(answer.parent)
 
         return questions
-
-    def track_view(self, user):
-        # check if the user already viewed the question
-        view = self.view_set.filter(baseview__user__pk=user.pk)
-
-        if not view:
-            view = View.objects.create(question=self)
-            view.save()
-            base_view = BaseView.objects.create(parent=view, user=user)
-            base_view.save()            
 
 
 class AllAnswerManager(models.Manager):
@@ -223,51 +227,6 @@ class Answer(BaseContent):
     # inactive answers have to be explicitly asked for by using Answer.all_objects
     objects = AnswerManager()
     all_objects = AllAnswerManager()
-
-
-    def votes_count(self):
-        """Return the answer's votes count
-        """
-        votes = self.vote_set.all().aggregate(Sum('basevote__value'))
-        if votes['basevote__value__sum']:
-
-            return votes['basevote__value__sum']
-
-        return 0
-
-    def vote(self, user, vote_value=1):
-        """Add a vote from a user
-        """
-
-        # check if the user already voted
-        vote = self.vote_set.filter(basevote__user__pk=user.pk)
-
-        if vote:
-            base_votes = vote[0].basevote_set.all()
-            for base_vote in base_votes:
-                base_vote.value = vote_value
-                base_vote.save()
-        else:
-            vote = Vote.objects.create(answer=self)
-            vote.save()
-            base_vote = BaseVote.objects.create(parent=vote, user=user, value=vote_value)
-            base_vote.save()
-
-    def get_comments(self):
-        """Return the question's comments
-        """
-        comments = self.comment_set.all()
-        base_comments = BaseComment.objects.filter(parent__in=comments)
-
-        return base_comments
-
-    def add_comment(self, body, user):
-        comment = Comment.objects.create(answer=self)
-        comment.save()
-        base_comment = BaseComment.objects.create(body=body, user=user, parent=comment)
-        base_comment.save()
-
-        return comment
 
 
 class Comment(models.Model):
