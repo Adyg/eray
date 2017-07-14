@@ -97,7 +97,7 @@ var Eray = { };
             $commentForms.on('submit', function(e) {
                 e.preventDefault();
                 var $this = $(this),
-                    $commentList = $this.parents('.comments-wrap:first').find('ul'),
+                    $commentList = $this.parents('.comment-list:first').find('ul'),
                     $textarea = $this.find('textarea'),
                     $error = $this.find('.error');
 

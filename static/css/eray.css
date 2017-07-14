@@ -170,46 +170,70 @@ body {
   list-style: none;
   margin: 0;
   padding: 0; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000323}}
+.question-list .count {
+  text-align: center; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000325}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000329}}
+.question-page .question-list {
+  border-top: 1px solid #eaecef;
+  margin: 30px 0 0 0; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000334}}
+.question-page .question-item {
+  border-bottom: 1px solid #eaecef;
+  margin: 20px 0;
+  padding: 20px 0; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000342}}
+.comment-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000348}}
+.comment-list li {
+  border-top: 1px solid #eaecef;
+  margin: 10px 0;
+  padding: 10px 0; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000356}}
 .controls li {
   display: inline-block; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000331}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000362}}
 .tags li {
   display: inline-block; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000336}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000367}}
 .community-post {
   border-bottom: 1px solid #ccc;
   padding: 20px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000343}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000374}}
 .question-stats ul {
   padding: 0; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000347}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000378}}
 .question-stats .controls,
 .question-stats li {
   text-align: center; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000352}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000383}}
 .question-stats li {
   width: 60px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000358}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000389}}
 .vote span {
   font-size: 3em; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000363}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000394}}
 .poster-details {
   text-align: right; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000367}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000398}}
 .comment-form {
   display: none; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000370}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\00003101}}
   .comment-form.active {
     display: block; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000374}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\00003105}}
   .comment-form textarea {
     height: 100px;
     width: 100%; }

@@ -62,18 +62,18 @@ question-page community-page
                                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                             </div>
                             <div class="details">
-                                <a href="#">{{ question.user.username }}</a><!-- <span class="point-count">404</span> -->
+                                <a href="#">{{ question.user.username }}</a>
                                 <p class="date time-ago">{{ question.created_at|timesince|ts_timesince:',' }} ago</p>
                             </div>
                         </div>
                     </div>            
                 </div> 
 
-                <div class="comments-wrap">
+                <div class="comment-list">
                     <ul>
                         {% for comment in question.get_comments %}
                             <li>
-                                {{ comment.body }} <a href="#">{{ comment.user.username }}</a> <span class="comment-date">{{ comment.created_at|date }}</span>
+                                {{ comment.body|markdownify }} <a href="#">{{ comment.user.username }}</a> <span class="comment-date">{{ comment.created_at|date }}</span>
                             </li>
                         {% endfor %}
                     </ul>
@@ -93,77 +93,73 @@ question-page community-page
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="answer-count-label">{{ question.answer_set.all.count }} Answer{{ question.answer_set.all.count|pluralize }}</div>
-    </div>
-</div>
 
 <div class="row">
     <div class="col-md-12">
-
-        <ul class="question-list">
-            {% for answer in question_answers %}
-            <li class="question-item clearfix">
-                <div class="row">
-                    <div class="col-md-1">
-                        <div class="controls">
-                            <a href="{% url 'vote-up-answer' pk=answer.pk %}" class="vote vote-up">
-                                <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
-                            </a>
-                            <ul class="clearfix">
-                                <li class="votes">
-                                    <p class="count">{{ answer.vote_count }}</p>
-                                    <p class="count-action">Votes</p>
-                                </li>
-                            </ul>
-                            <a href="{% url 'vote-down-answer' pk=answer.pk %}" class="vote vote-down">
-                                <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
-                            </a>                
+        <div class="question-list">
+            <ul>
+                {% for answer in question_answers %}
+                <li class="question-item clearfix">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <div class="controls">
+                                <a href="{% url 'vote-up-answer' pk=answer.pk %}" class="vote vote-up">
+                                    <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                                </a>
+                                <ul class="clearfix">
+                                    <li class="votes">
+                                        <p class="count">{{ answer.vote_count }}</p>
+                                        <p class="count-action">Votes</p>
+                                    </li>
+                                </ul>
+                                <a href="{% url 'vote-down-answer' pk=answer.pk %}" class="vote vote-down">
+                                    <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                                </a>                
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-11">
-                        <div class="answer-wrap">
-                            <div class="answer markdown-body">{{ answer.body|markdownify }}</div>
-                            <div class="answer-info clearfix">
-                                <a href="{% url 'answer-comment' %}" rel="comment-form-{{ answer.pk }}" class="add-comment">Add a comment</a>
-                                <div class="poster-details clearfix">
-                                    <div class="poster">
-                                        <div class="poster-details clearfix">
-                                            <div class="avatar">
-                                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        <div class="col-md-11">
+                            <div class="answer-wrap">
+                                <div class="answer markdown-body">{{ answer.body|markdownify }}</div>
+                                <div class="answer-info clearfix">
+                                    <a href="{% url 'answer-comment' %}" rel="comment-form-{{ answer.pk }}" class="add-comment">Add a comment</a>
+                                    <div class="poster-details clearfix">
+                                        <div class="poster">
+                                            <div class="poster-details clearfix">
+                                                <div class="avatar">
+                                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                                </div>
+                                                <div class="details">
+                                                    <a href="#">{{ answer.user.username }}</a>
+                                                    <p class="date time-ago">{{ answer.created_at|date:'n/j/Y \a\t h:i A' }}</p>
+                                                </div>
                                             </div>
-                                            <div class="details">
-                                                <a href="#">{{ answer.user.username }}</a><!-- <span class="point-count">404</span> -->
-                                                <p class="date time-ago">{{ answer.created_at|date:'n/j/Y \a\t h:i A' }}</p>
-                                            </div>
-                                        </div>
-                                    </div>            
+                                        </div>            
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="comment-list" id="comment-form-{{ answer.pk }}">
+                                <ul>
+                                    {% for comment in answer.get_comments %}
+                                        <li>
+                                            {{ comment.body|markdownify }} <a href="#">{{ comment.user.username }}</a> <span class="comment-date">{{ comment.created_at|date }}</span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                                <div class="comment-form">
+                                    <form action="{% url 'answer-comment' %}" method="POST">{% csrf_token %}
+                                        <textarea name="body"></textarea>
+                                        <input type="hidden" value="{{ answer.pk }}" name="answer">
+                                        <div class="error"></div>
+                                        <button class="btn btn-primary" type="submit">Submit</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
-                        <div class="comments-wrap" id="comment-form-{{ answer.pk }}">
-                            <ul>
-                                {% for comment in answer.get_comments %}
-                                    <li>
-                                        {{ comment.body }} <a href="#">{{ comment.user.username }}</a> <span class="comment-date">{{ comment.created_at|date }}</span>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                            <div class="comment-form">
-                                <form action="{% url 'answer-comment' %}" method="POST">{% csrf_token %}
-                                    <textarea name="body"></textarea>
-                                    <input type="hidden" value="{{ answer.pk }}" name="answer">
-                                    <div class="error"></div>
-                                    <button class="btn btn-primary" type="submit">Submit</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>               
-            </li>
-            {% endfor %}
-        </ul>
+                    </div>               
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 </div>
 

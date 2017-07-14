@@ -43,7 +43,7 @@ class BaseContent(models.Model):
                 base_vote.value = vote_value
                 base_vote.save()
         else:
-            vote = Vote.objects.create(answer=self)
+            vote = Vote.objects.create(**self.get_poly_params())
             vote.save()
             base_vote = BaseVote.objects.create(parent=vote, user=user, value=vote_value)
             base_vote.save()
@@ -59,7 +59,7 @@ class BaseContent(models.Model):
     def add_comment(self, body, user):
         """Add a new Comment related to this object
         """
-        comment = Comment.objects.create(answer=self)
+        comment = Comment.objects.create(**self.get_poly_params())
         comment.save()
         base_comment = BaseComment.objects.create(body=body, user=user, parent=comment)
         base_comment.save()
@@ -73,11 +73,21 @@ class BaseContent(models.Model):
         view = self.view_set.filter(baseview__user__pk=user.pk)
 
         if not view:
-            view = View.objects.create(question=self)
+            view = View.objects.create(**self.get_poly_params())
             view.save()
             base_view = BaseView.objects.create(parent=view, user=user)
             base_view.save()            
 
+    def get_poly_params(self):
+        """Return a dictionary populated with either a question or an answer element,
+        depending on the type of the child inheriting from this abstract class
+        """
+        object_type = self.__class__.__name__
+
+        if object_type == 'Question':
+            return { 'question': self }
+
+        return { 'answer': self }
 
 class AllTagManager(models.Manager):
     """
