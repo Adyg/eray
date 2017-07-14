@@ -34,6 +34,7 @@
         - python
         - python-dev
         - python-virtualenv
+        - python3-pip
         - libevent-dev
         - libpq-dev
         - zlib1g-dev
