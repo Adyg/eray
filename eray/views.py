@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.core.urlresolvers import reverse
-from django.db.models import Avg, Max, Min, Sum, Q
+from django.db.models import Avg, Max, Min, Sum, Q, Count
 from django.db.models.functions import Coalesce
 from django.http import JsonResponse, HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
@@ -30,22 +30,20 @@ def homepage(request):
 
     # Coalesce will be used below to avoid NULL values interfering with the ordering
     # Track https://code.djangoproject.com/ticket/10929 for future alternatives
-    question_list = question_list.annotate(total_votes=Coalesce(
-                 Sum('vote__basevote__value'), 0)).annotate(total_views=Coalesce(
-                 Sum('view__baseview__value'), 0)).annotate(total_answers=Coalesce(Sum('answer'), 0))
+    question_list = question_list.annotate(answer_count=Coalesce(Count('answer'), 0))
 
     if order:
         if order == 'date':
             question_list = question_list.order_by('-created_at')
 
         if order == 'votes':
-            question_list = question_list.order_by('-total_votes')
+            question_list = question_list.order_by('-vote_count')
 
         if order == 'views':
-            question_list = question_list.order_by('-total_views')
+            question_list = question_list.order_by('-view_count')
 
         if order == 'answers':
-            question_list = question_list.order_by('-total_answers')
+            question_list = question_list.order_by('-answer_count')
 
     paginator = ErayPaginator(question_list, 10)
 
@@ -207,7 +205,7 @@ def vote_up(request, pk):
         if question:
             question.vote(request.user, 1)
 
-            return HttpResponse(question.votes_count())
+            return HttpResponse(question.vote_count)
 
     return HttpResponse('')
 
@@ -226,7 +224,7 @@ def vote_down(request, pk):
         if question:
             question.vote(request.user, -1)
 
-            return HttpResponse(question.votes_count())
+            return HttpResponse(question.vote_count)
 
     return HttpResponse('')
 

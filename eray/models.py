@@ -8,6 +8,29 @@ from django.db.models import Avg, Max, Min, Sum
 from django.utils import timezone
 
 
+class BaseContent(models.Model):
+    """
+    Abstract model, contains fields common between all content pieces
+    """
+    STATUS_CHOICES = (
+        ('A', 'Active'),
+        ('I', 'Inactive'),
+        ('P', 'Private'),
+    )
+
+    body = models.TextField()
+    created_at = models.DateTimeField(default=timezone.now)
+    user = models.ForeignKey(User, blank=True, null=True)
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='A')
+
+    # Denormalized counts
+    vote_count = models.IntegerField(default=0)
+    view_count = models.IntegerField(default=0)
+
+    class Meta:
+        abstract = True
+
+
 class AllTagManager(models.Manager):
     """
     Tag manager that retrieves all Tags, including Inactive ones
@@ -84,22 +107,12 @@ class QuestionManager(models.Manager):
         return super(QuestionManager, self).get_query_set().filter(status='A')
 
 
-class Question(models.Model):
+class Question(BaseContent):
     """
     Questions model
     """
-    STATUS_CHOICES = (
-        ('A', 'Active'),
-        ('I', 'Inactive'),
-        ('P', 'Private'),
-    )
-
-    body = models.TextField()
-    created_at = models.DateTimeField(default=timezone.now)
-    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='A')
     tags = models.ManyToManyField(Tag)
     title = models.CharField(max_length=300)
-    user = models.ForeignKey(User, blank=True, null=True)
 
     # default filtering will only be applied to active questions.
     # inactive and private questions have to be explicitly asked for by using Question.all_objects
@@ -110,26 +123,6 @@ class Question(models.Model):
     def __unicode__(self):
 
         return self.title
-
-    def view_count(self):
-        """Return the question's view count
-        """
-        views = self.view_set.all().aggregate(Sum('baseview__value'))
-        if views['baseview__value__sum']:
-
-            return views['baseview__value__sum']
-
-        return 0
-
-    def votes_count(self):
-        """Return the question's votes count
-        """
-        votes = self.vote_set.all().aggregate(Sum('basevote__value'))
-        if votes['basevote__value__sum']:
-
-            return votes['basevote__value__sum']
-
-        return 0
 
     def answer_count(self):
         """Return the question's answer count
@@ -220,21 +213,11 @@ class AnswerManager(models.Manager):
         return super(AnswerManager, self).get_query_set().filter(status='A')
 
 
-class Answer(models.Model):
+class Answer(BaseContent):
     """
     Answer model
     """
-    STATUS_CHOICES = (
-        ('A', 'Active'),
-        ('I', 'Inactive'),
-        ('P', 'Private'),
-    )
-
-    body = models.TextField()
-    created_at = models.DateTimeField(default=timezone.now)
     parent = models.ForeignKey(Question, blank=True, null=True)
-    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='A')
-    user = models.ForeignKey(User, blank=True, null=True)
 
     # default filtering will only be applied to active answers.
     # inactive answers have to be explicitly asked for by using Answer.all_objects
