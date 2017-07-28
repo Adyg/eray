@@ -26,6 +26,7 @@ urlpatterns = [
     # auth
     url(r'^accounts/login/$', eray_views.login, name='login'),
     url(r'^logout/$', eray_views.logout, name='logout'),
+    url(r'^accounts/create/$', eray_views.register, name='register'),
 
     # post question
     url(r'^ask/$', eray_views.post_question, name='question'),

@@ -5,11 +5,11 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.core.urlresolvers import reverse
 from django.db.models import Avg, Max, Min, Sum, Q, Count
 from django.db.models.functions import Coalesce
-from django.http import JsonResponse, HttpResponse, Http404
+from django.http import JsonResponse, HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 
-from eray.forms import PostQuestion, PostAnswer, LoginForm
+from eray.forms import (PostQuestion, PostAnswer, LoginForm, RegistrationForm, )
 from eray.models import (Tag, Question, Answer,)
 from eray.lib.eray_paginator import ErayPaginator
 
@@ -96,6 +96,29 @@ def logout(request):
     auth_logout(request)
 
     return redirect(reverse('home'))
+
+
+def register(request):
+    auth_logout(request)
+    register_form = RegistrationForm()
+
+    if request.method == 'POST':
+        register_form = RegistrationForm(request.POST, request.FILES)
+        if register_form.is_valid():
+            register_form.save()
+            user = authenticate(
+                username=register_form.cleaned_data['username'], password=register_form.cleaned_data['password1'])
+            if user is not None:
+                if user.is_active:
+                    auth_login(request, user)
+
+                    return HttpResponseRedirect(reverse('home'))
+
+            return HttpResponseRedirect(reverse('home'))
+
+    return render(request, 'eray/register.html', {
+        'register_form': register_form,
+    })
 
 
 @login_required

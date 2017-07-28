@@ -1,6 +1,6 @@
 from django import forms
-
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import (AuthenticationForm, UserCreationForm,)
 
 from eray.models import (Question, Tag, Answer)
 from eray.utils import pluralize
@@ -15,6 +15,29 @@ class LoginForm(AuthenticationForm):
 
         self.fields['username'].widget.attrs['placeholder'] = 'Username'
         self.fields['password'].widget.attrs['placeholder'] = 'Password'
+
+
+class RegistrationForm(UserCreationForm):
+    """Registration form
+    """
+    email = forms.EmailField(required=True)
+    
+    def __init__(self, *args, **kwargs):
+        super(RegistrationForm, self).__init__(*args, **kwargs)
+
+        self.fields['username'].widget.attrs['class'] = 'form-control'
+        self.fields['email'].widget.attrs['class'] = 'form-control'
+        self.fields['password1'].widget.attrs['class'] = 'form-control'
+        self.fields['password2'].widget.attrs['class'] = 'form-control'
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2')        
+
+    def save(self,commit = True):   
+        user = super(RegistrationForm, self).save()
+
+        return user
 
 
 class PostQuestion(forms.ModelForm):

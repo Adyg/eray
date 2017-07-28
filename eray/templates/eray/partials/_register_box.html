@@ -1,0 +1,25 @@
+{% load staticfiles %}
+
+<!-- Start login box -->          
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <p class="greeting">Please sign up</p>
+      <form method="POST" action="{% url 'register' %}" class="">
+        {% csrf_token %}
+
+        {% include 'eray/partials/forms/_formfield.html' with field=register_form.username label='Username' for='username' %}
+        {% include 'eray/partials/forms/_formfield.html' with field=register_form.email label='Email' for='email' %}
+        {% include 'eray/partials/forms/_formfield.html' with field=register_form.password1 label='Password' for='password1' %}
+        {% include 'eray/partials/forms/_formfield.html' with field=register_form.password2 label='Confirm password' for='password2' %}
+
+        <button class="btn btn-primary btn-block" type="submit">Sign up</button>
+      </form>
+      <div class="auth-actions">
+        <a href="#">Forgot Password</a><br/>
+        <a href="#">Login</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End login box -->
