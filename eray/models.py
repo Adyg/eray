@@ -232,11 +232,22 @@ class Answer(BaseContent):
     Answer model
     """
     parent = models.ForeignKey(Question, blank=True, null=True)
+    accepted = models.BooleanField(default=False)
 
     # default filtering will only be applied to active answers.
     # inactive answers have to be explicitly asked for by using Answer.all_objects
     objects = AnswerManager()
     all_objects = AllAnswerManager()
+
+
+    def mark_accepted(self):
+        """Mark the answer as accepted. Ensures only 1 accepted answer per question
+        """
+        # only 1 accepted answer per question
+        Answer.objects.filter(parent=self.parent).update(accepted=False)
+
+        self.accepted = True
+        self.save()
 
 
 class Comment(models.Model):

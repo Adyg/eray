@@ -202,10 +202,10 @@ def question(request, pk):
 
             return redirect(reverse('question', kwargs={'pk': question.pk}))
 
-    if request.user.is_superuser:
-        question_answers = question.answer_set.all()
-    else:
-        question_answers = question.answer_set.filter(Q(status='A') | Q(user=request.user))
+    question_answers =  question.answer_set.all().order_by('-accepted')
+
+    if not request.user.is_superuser:
+        question_answers = question_answers.filter(Q(status='A') | Q(user=request.user))
 
     return render(request, 'eray/question.html', {
         'question': question,
@@ -250,6 +250,14 @@ def vote_down(request, pk):
             return HttpResponse(question.vote_count)
 
     return HttpResponse('')
+
+
+@login_required
+def accept_answer(request, answer_pk):
+    answer = get_object_or_404(Answer, pk=answer_pk, user=request.user)
+    answer.mark_accepted()
+
+    return HttpResponseRedirect(reverse('question', kwargs={ 'pk': answer.parent.pk }))
 
 
 @login_required

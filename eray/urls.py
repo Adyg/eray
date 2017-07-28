@@ -49,6 +49,9 @@ urlpatterns = [
     # vote down answer
     url(r'^vote/down/answer/(?P<pk>\d+)/$', eray_views.vote_down_answer, name='vote-down-answer'),
 
+    # accept answer
+    url(r'^accept/answer/(?P<answer_pk>\d+)/$', eray_views.accept_answer, name='accept-answer'),
+
     # question comment
     url(r'^question/comment/$', eray_views.question_comment, name='question-comment'),     
 

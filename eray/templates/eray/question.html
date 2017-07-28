@@ -99,7 +99,7 @@ question-page community-page
         <div class="question-list">
             <ul>
                 {% for answer in question_answers %}
-                <li class="question-item clearfix">
+                <li class="question-item clearfix {% if answer.accepted %}accepted-answer{% endif %}">
                     <div class="row">
                         <div class="col-md-1">
                             <div class="controls">
@@ -114,7 +114,12 @@ question-page community-page
                                 </ul>
                                 <a href="{% url 'vote-down-answer' pk=answer.pk %}" class="vote vote-down">
                                     <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
-                                </a>                
+                                </a>
+                                {% if question.user.pk == request.user.pk %}
+                                    <a href="{% url 'accept-answer' answer_pk=answer.pk %}" class="accept-answer">
+                                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                    </a>                                
+                                {% endif %}
                             </div>
                         </div>
                         <div class="col-md-11">
