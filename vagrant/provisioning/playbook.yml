@@ -95,3 +95,12 @@
       java_packages:
         - openjdk-8-jdk
     - geerlingguy.solr
+
+  post_tasks:
+  - name: Copy Solr schema
+    copy:
+      src: ../../solr_schema.xml
+      dest: /var/solr/collection1/conf/schema.xml
+    handlers:
+      - name: restart Solr
+        service: name=solr state=restarted      
