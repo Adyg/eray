@@ -20,8 +20,9 @@ urlpatterns = [
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 
-    # placeholders
+    # home
     url(r'^$', eray_views.homepage, name='home'),
+    url(r'^tagged/(?P<tags>.*)/$', eray_views.homepage, name='home-tags'),
 
     # auth
     url(r'^accounts/login/$', eray_views.login, name='login'),
@@ -33,6 +34,9 @@ urlpatterns = [
 
     # tag autocomplete, called via AJAX
     url(r'^tag-autocomplete/$', eray_views.tag_autocomplete, name='tag-autocomplete'),
+
+    # tag cloud
+    url(r'^tag-cloud/$', eray_views.tag_cloud, name='tag-cloud'),
 
     # question detail page
     url(r'^question/(?P<pk>\d+)/$', eray_views.question, name='question'),

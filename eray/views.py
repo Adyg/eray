@@ -14,7 +14,7 @@ from eray.models import (Tag, Question, Answer,)
 from eray.lib.eray_paginator import ErayPaginator
 
 
-def homepage(request):
+def homepage(request, tags=False):
     """Community question list
     """
     MAX_RESULTS = 10
@@ -27,6 +27,11 @@ def homepage(request):
         question_list = Question.all_objects.filter(Q(status='A') | Q(user=request.user))
     else:
         question_list = Question.all_objects.filter(status='A')
+
+    # filtering by tags
+    if tags:
+        tags = tags.split(' ')
+        question_list = question_list.filter(tags__name__in=tags)
 
     # Coalesce will be used below to avoid NULL values interfering with the ordering
     # Track https://code.djangoproject.com/ticket/10929 for future alternatives
@@ -344,3 +349,24 @@ def answer_comment(request):
     answer.add_comment(comment, user)
 
     return JsonResponse({'success': True, 'message': comment})
+
+
+def tag_cloud(request):
+    """Community Tag list
+    """
+    MAX_RESULTS = 10
+    page = request.GET.get('page', 1)
+    tag_list = Tag.objects.all()
+
+    paginator = ErayPaginator(tag_list, 10)
+
+    try:
+        tags = paginator.page(page)
+    except PageNotAnInteger:
+        tags = paginator.page(1)
+    except EmptyPage:
+        tags = paginator.page(paginator.num_pages)
+
+    return render(request, 'eray/tags.html', {
+        'tags': tags,
+    })
