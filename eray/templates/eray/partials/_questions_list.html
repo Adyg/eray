@@ -1,0 +1,9 @@
+{% if questions %}
+	<ul class="community-posts">
+		{% for question in questions %}
+		    {% include 'eray/partials/_question.html' with question=question date_format=date_format %}
+		{% endfor %}
+	</ul>
+{% else %}
+	<h1 class="no-questions">There are no questions to be displayed here.</h1>
+{% endif %}

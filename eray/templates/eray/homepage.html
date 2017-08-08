@@ -14,11 +14,7 @@
 
     <div class="row">
         <div class="col-md-12 question-list">
-            <ul class="community-posts">
-                {% for question in questions %}
-                    {% include 'eray/partials/_question.html' with question=question date_format=date_format %}
-                {% endfor %}
-            </ul>
+            {% include 'eray/partials/_questions_list.html' with questions=questions %}
         </div>
     </div>
 
