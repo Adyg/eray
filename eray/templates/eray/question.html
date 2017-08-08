@@ -38,7 +38,7 @@ question-page community-page
             <div class="question-tags">
                 <ul class="tags clearfix">
                     {% for tag in question.tags.all %}
-                        <li><a href="#">#{{ tag.name }}</a></li>
+                        <li>{% include 'eray/partials/_tag.html' with tag=tag %}</li>
                     {% endfor %}
                 </ul>        
             </div>
