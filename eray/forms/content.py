@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import (AuthenticationForm, UserCreationForm,)
 
-from eray.models import (Question, Tag, Answer)
+from eray.models.content import (Question, Tag, Answer)
 from eray.utils import pluralize
 
 

@@ -3,7 +3,7 @@ from django.db.models.signals import post_save
 from django.db.models import Sum
 from django.dispatch import receiver
 
-from eray.models import (Question, Answer, BaseVote, BaseView)
+from eray.models.content import (Question, Answer, BaseVote, BaseView)
 
 
 @receiver(post_save, sender=BaseVote)

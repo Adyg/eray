@@ -4,7 +4,7 @@ import random
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from django_seed import Seed
-from eray.models import Tag, Question, Answer, Comment, BaseComment, Vote, BaseVote, View, BaseView
+from eray.models.content import Tag, Question, Answer, Comment, BaseComment, Vote, BaseVote, View, BaseView
 import urllib.request
 
 

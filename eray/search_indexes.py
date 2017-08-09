@@ -1,6 +1,6 @@
 import datetime
 from haystack import indexes
-from eray.models import Question
+from eray.models.content import Question
 
 
 class QuestionIndex(indexes.SearchIndex, indexes.Indexable):

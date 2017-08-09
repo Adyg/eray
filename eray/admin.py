@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from eray.models import (Question, Tag, Vote, BaseVote, Answer, Comment, BaseComment, View, BaseView)
+from eray.models.content import (Question, Tag, Vote, BaseVote, Answer, Comment, BaseComment, View, BaseView)
 
 admin.site.register(Tag)
 admin.site.register(Question)

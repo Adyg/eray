@@ -9,8 +9,8 @@ from django.http import JsonResponse, HttpResponse, Http404, HttpResponseRedirec
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 
-from eray.forms import (PostQuestion, PostAnswer, LoginForm, RegistrationForm, )
-from eray.models import (Tag, Question, Answer,)
+from eray.forms.content import (PostQuestion, PostAnswer, LoginForm, RegistrationForm, )
+from eray.models.content import (Tag, Question, Answer,)
 from eray.lib.eray_paginator import ErayPaginator
 
 
