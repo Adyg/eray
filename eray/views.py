@@ -354,11 +354,11 @@ def answer_comment(request):
 def tag_cloud(request):
     """Community Tag list
     """
-    MAX_RESULTS = 10
+    MAX_RESULTS = 100
     page = request.GET.get('page', 1)
     tag_list = Tag.objects.all()
 
-    paginator = ErayPaginator(tag_list, 10)
+    paginator = ErayPaginator(tag_list, MAX_RESULTS)
 
     try:
         tags = paginator.page(page)

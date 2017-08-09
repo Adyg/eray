@@ -216,7 +216,10 @@ THIRD_PARTY_APPS = (
     'dj_database_url',
 
     # Search
-    'haystack'
+    'haystack',
+
+    # Seeder app, used for populating the db with random data
+    'django_seed',
 )
 
 # Apps specific for this project go here.
