@@ -30,7 +30,7 @@ def homepage(request, tags=False):
 
     # filtering by tags
     if tags:
-        tags = tags.split(' ')
+        tags = tags.split(',')
         question_list = question_list.filter(tags__name__in=tags)
 
     # Coalesce will be used below to avoid NULL values interfering with the ordering
