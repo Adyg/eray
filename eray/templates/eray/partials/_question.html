@@ -12,7 +12,7 @@
                     {% endfor %}
                 </ul>
                 <div class="poster pull-right">
-                    <p>Asked by <a href="#">{{ question.user.username }}</a> @{{ question.created_at|date }}</p>
+                    <p>Asked by {% include 'eray/partials/_profile_link.html' with user=question.user %} @{{ question.created_at|date }}</p>
                 </div>
             </div>
         </div>

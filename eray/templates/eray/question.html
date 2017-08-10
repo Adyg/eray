@@ -62,7 +62,7 @@ question-page community-page
                                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                             </div>
                             <div class="details">
-                                <a href="#">{{ question.user.username }}</a>
+                                {% include 'eray/partials/_profile_link.html' with user=question.user %}
                                 <p class="date time-ago">{{ question.created_at|timesince|ts_timesince:',' }} ago</p>
                             </div>
                         </div>
@@ -73,7 +73,7 @@ question-page community-page
                     <ul>
                         {% for comment in question.get_comments %}
                             <li>
-                                {{ comment.body|markdownify }} <a href="#">{{ comment.user.username }}</a> <span class="comment-date">{{ comment.created_at|date }}</span>
+                                {{ comment.body|markdownify }} {% include 'eray/partials/_profile_link.html' with user=comment.user %} <span class="comment-date">{{ comment.created_at|date }}</span>
                             </li>
                         {% endfor %}
                     </ul>
@@ -134,7 +134,7 @@ question-page community-page
                                                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                                                 </div>
                                                 <div class="details">
-                                                    <a href="#">{{ answer.user.username }}</a>
+                                                    {% include 'eray/partials/_profile_link.html' with user=answer.user %}
                                                     <p class="date time-ago">{{ answer.created_at|date:'n/j/Y \a\t h:i A' }}</p>
                                                 </div>
                                             </div>
@@ -146,7 +146,7 @@ question-page community-page
                                 <ul>
                                     {% for comment in answer.get_comments %}
                                         <li>
-                                            {{ comment.body|markdownify }} <a href="#">{{ comment.user.username }}</a> <span class="comment-date">{{ comment.created_at|date }}</span>
+                                            {{ comment.body|markdownify }} {% include 'eray/partials/_profile_link.html' with user=comment.user %} <span class="comment-date">{{ comment.created_at|date }}</span>
                                         </li>
                                     {% endfor %}
                                 </ul>
