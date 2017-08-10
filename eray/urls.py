@@ -61,6 +61,9 @@ urlpatterns = [
 
     # answer comment
     url(r'^answer/comment/$', eray_views.answer_comment, name='answer-comment'),     
+
+    # user profile
+    url(r'^profile/(?P<username>.*)$', eray_views.profile, name='profile')
 ]
 
 # Uncomment the next line to serve media files in dev.

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 profile-wrap">
+            <h1>{{ user.profile.get_long_name }}</h1>
+            <h2>{{ user.profile.get_username }}</h2>
+            {% if user.profile.avatar %}
+                <img src="{{ user.profile.avatar.url }}">
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}

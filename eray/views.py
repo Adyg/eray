@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.core.urlresolvers import reverse
@@ -369,4 +370,13 @@ def tag_cloud(request):
 
     return render(request, 'eray/tags.html', {
         'tags': tags,
+    })
+
+def profile(request, username):
+    """User profile page
+    """
+    user = get_object_or_404(User, username=username)
+
+    return render(request, 'eray/profile.html', {
+        'user': user,
     })

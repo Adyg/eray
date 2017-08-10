@@ -12,6 +12,18 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to=avatar_directory)
 
+    def get_long_name(self):
+    	"""Returns the First name and Last name
+    	"""
+
+    	return '{} {}'.format(self.user.first_name, self.user.last_name)
+
+    def get_username(self):
+    	"""Return the user's username
+    	"""
+
+    	return '{}'.format(self.user.username)
+
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
