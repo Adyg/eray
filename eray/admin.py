@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from eray.models.content import (Question, Tag, Vote, BaseVote, Answer, Comment, BaseComment, View, BaseView)
+from eray.models.user import (Profile)
 
 admin.site.register(Tag)
 admin.site.register(Question)
@@ -11,3 +12,4 @@ admin.site.register(Comment)
 admin.site.register(BaseComment)
 admin.site.register(View)
 admin.site.register(BaseView)
+admin.site.register(Profile)
