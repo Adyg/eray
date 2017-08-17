@@ -5,12 +5,16 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from eray.models.achievements import Achievement
+
+
 def avatar_directory(instance, filename):
     return '/'.join(['avatars', str(datetime.datetime.now().year), str(datetime.datetime.now().month), filename])
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to=avatar_directory)
+    achievements = models.ManyToManyField(Achievement)
 
     def get_long_name(self):
     	"""Returns the First name and Last name
