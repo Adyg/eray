@@ -5,6 +5,7 @@ from django.db.models.signals import post_save
 
 from eray.models.achievements import Achievement
 from eray.models.content import BaseVote
+from eray.utils import get_module_classes
 
 
 class BaseAchievement():
@@ -12,74 +13,77 @@ class BaseAchievement():
 
     It handles populating the database with the Achievements data
     """
-
-    def install_achievements(self):
+    @classmethod
+    def install_achievements(cls, sender, **kwargs):
         """Returns an int (number of achieves installed)
 
         Parses the current module for any achievement classes and installs them
         """
-        for name, obj in inspect.getmembers(sys.modules[__name__]):
-            if inspect.isclass(obj):
+        # only perform the install if called from the Eray config
+        if sender.name != 'eray':
+            return None
 
-                # create the Achievement db record
-                achievement = Achievement.objects.create(
-                    title=obj.title,
-                    description=obj.description,
-                    slug=obj.slug,
-                )
-
-                # callback method after achievement db record is created
-                install_method = getattr(obj, 'install', None)
-                if callable(install_method):
-                    obj.install_self(achievement)
-
-
-class BasePointAchievement():
-    """Base class for achievements based on number of points
-    """
-    def check_achievement(cls):
-        pass
-
-    post_save.connect(check_achievement, BaseVote, weak=False)
+        objs = get_module_classes(__name__)
+        for obj in objs:
+            if obj != cls:
+                achievement = Achievement.objects.filter(slug=obj.slug).count()
+                if not achievement:
+                    # create the Achievement db record
+                    achievement = Achievement.objects.create(
+                        title=obj.title,
+                        description=obj.description,
+                        slug=obj.slug,
+                    )
 
 
-class AchievementPrivate(BasePointAchievement):
+    @classmethod
+    def register_achievement_listeners(cls):
+        """Parses the current module for any achievement classes and registers their listeners
+        """
+        objs = get_module_classes(__name__)
+        for obj in objs:
+            listener_method = getattr(obj, 'listener', None)
+            if callable(listener_method):
+                obj.listener()
+
+
+class AchievementPrivate():
     title = 'Private'
     description = 'Earn 10 points'
     slug = 'private'
 
     @classmethod
-    def install(cls, achievement):
+    def award(cls, sender, instance, created, **kwargs):
         pass
 
     @classmethod
-    def award(cls):
-        pass
+    def listener(cls):
+        post_save.connect(AchievementPrivate.award, sender=BaseVote, dispatch_uid='eray.achievements.AchievementPrivate')
 
 
-class AchievementCorporal(BasePointAchievement):
+class AchievementCorporal():
     title = 'Corporal'
     description = 'Earn 50 points'
     slug = 'corporal'
 
     @classmethod
-    def install(cls, achievement):
+    def award(cls, sender, instance, created, **kwargs):
         pass
 
     @classmethod
-    def award(cls):
-        pass
+    def listener(cls):
+        post_save.connect(AchievementCorporal.award, sender=BaseVote, dispatch_uid='eray.achievements.AchievementCorporal')
 
 
-class AchievementSergeant(BasePointAchievement):
+class AchievementSergeant():
     title = 'Sergeant'
     description = 'Earn 100 points'
     slug = 'sergeant'
 
     @classmethod
-    def install(cls, achievement):
+    def award(cls, sender, instance, created, **kwargs):
         pass
 
     @classmethod
-    def award(cls):
-        pass        
+    def listener(cls):
+        post_save.connect(AchievementCorporal.award, sender=BaseVote, dispatch_uid='eray.achievements.AchievementSergeant')    

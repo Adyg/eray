@@ -44,9 +44,7 @@ class BaseContent(models.Model):
                 base_vote.save()
         else:
             vote = Vote.objects.create(**self.get_poly_params())
-            vote.save()
             base_vote = BaseVote.objects.create(parent=vote, user=user, value=vote_value)
-            base_vote.save()
 
     def get_comments(self):
         """Return the question's comments

@@ -1,0 +1,3 @@
+from eray.achievements.achievements_list import BaseAchievement
+
+BaseAchievement.register_achievement_listeners()
