@@ -23,7 +23,7 @@ class BaseAchievement():
         if sender.name != 'eray':
             return None
 
-        objs = get_module_classes(__name__)
+        objs = get_module_classes(__name__, 'title')
         for obj in objs:
             if obj != cls:
                 achievement = Achievement.objects.filter(slug=obj.slug).count()
@@ -47,43 +47,56 @@ class BaseAchievement():
                 obj.listener()
 
 
-class AchievementPrivate():
-    title = 'Private'
-    description = 'Earn 10 points'
-    slug = 'private'
+class BasePointsAchievement():
+    """Base class for handling achievements awarded based on number of points
+    """
+
+    only_award_once = True # flag controlling if users can only gain the achievement once
+    slug = None
 
     @classmethod
-    def award(cls, sender, instance, created, **kwargs):
-        pass
+    def grant_achievement(cls, sender, instance, created, **kwargs):
+        """Adds the Achievement to the User's profile achievements list
+        """
+        achievement = Achievement.objects.get(slug=cls.slug)
+        vote_parent = instance.parent.get_parent_obj()
+        profile = vote_parent.user.profile
+
+        # user meets the criteria for awarding the achievement
+        if profile.get_points() > cls.points_limit:
+            # achievement can be awarded multiple times or it was not yet awarded
+            if cls.only_award_once or not profile.achievements.filter(pk=achievement.pk).exists():
+                profile.achievements.add(achievement)
+
+
+class AchievementPrivate(BasePointsAchievement):
+    title = 'Private'
+    description = 'Earn 1 point'
+    slug = 'private'
+    points_limit = 1
 
     @classmethod
     def listener(cls):
-        post_save.connect(AchievementPrivate.award, sender=BaseVote, dispatch_uid='eray.achievements.AchievementPrivate')
+        post_save.connect(AchievementPrivate.grant_achievement, sender=BaseVote, dispatch_uid='eray.achievements.AchievementPrivate')
 
 
-class AchievementCorporal():
+class AchievementCorporal(BasePointsAchievement):
     title = 'Corporal'
     description = 'Earn 50 points'
     slug = 'corporal'
-
-    @classmethod
-    def award(cls, sender, instance, created, **kwargs):
-        pass
+    points_limit = 50
 
     @classmethod
     def listener(cls):
-        post_save.connect(AchievementCorporal.award, sender=BaseVote, dispatch_uid='eray.achievements.AchievementCorporal')
+        post_save.connect(AchievementCorporal.grant_achievement, sender=BaseVote, dispatch_uid='eray.achievements.AchievementCorporal')
 
 
-class AchievementSergeant():
+class AchievementSergeant(BasePointsAchievement):
     title = 'Sergeant'
     description = 'Earn 100 points'
     slug = 'sergeant'
-
-    @classmethod
-    def award(cls, sender, instance, created, **kwargs):
-        pass
+    points_limit = 100
 
     @classmethod
     def listener(cls):
-        post_save.connect(AchievementCorporal.award, sender=BaseVote, dispatch_uid='eray.achievements.AchievementSergeant')    
+        post_save.connect(AchievementSergeant.grant_achievement, sender=BaseVote, dispatch_uid='eray.achievements.AchievementSergeant')    

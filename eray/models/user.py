@@ -2,11 +2,12 @@ import datetime
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Sum
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from eray.models.achievements import Achievement
-
+from eray.models.content import BaseVote
 
 def avatar_directory(instance, filename):
     return '/'.join(['avatars', str(datetime.datetime.now().year), str(datetime.datetime.now().month), filename])
@@ -27,6 +28,14 @@ class Profile(models.Model):
     	"""
 
     	return '{}'.format(self.user.username)
+
+    def get_points(self):
+        """Return the total points count
+
+        Will include points from both questions and answers
+        """
+
+        return BaseVote.objects.filter(user=self.user).aggregate(Sum('value'))['value__sum']
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

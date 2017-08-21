@@ -303,6 +303,15 @@ class Vote(models.Model):
     question = models.ForeignKey(Question, null=True, blank=True, on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer, null=True, blank=True, on_delete=models.CASCADE)
 
+    def get_parent_obj(self):
+        """Returns a Question or an Answer
+        """
+        if self.question:
+
+            return self.question
+
+        return self.answer
+
 
 class BaseVote(models.Model):
     """

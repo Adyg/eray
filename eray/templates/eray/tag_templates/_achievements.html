@@ -1,0 +1,12 @@
+{% if achievements %}
+    <ul class="achievements">
+        {% for achievement in achievements %}
+            <li>
+                <a href="#">{{ achievement.title }}</a>
+                <p>{{ achievement.description }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p class="dust">Nothing here.</p>
+{% endif %}

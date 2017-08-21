@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load staticfiles %}
+{% load staticfiles achievements %}
 
 {% block content %}
     <div class="row">
@@ -10,6 +10,8 @@
             {% if user.profile.avatar %}
                 <img src="{{ user.profile.avatar.url }}">
             {% endif %}
+            <h3>Achievements</h3>
+            {% achievements profile=user.profile %}
         </div>
     </div>
 {% endblock content %}
