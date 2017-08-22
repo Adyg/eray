@@ -7,6 +7,7 @@ class ErayConfig(AppConfig):
 
     def ready(self):
         from eray.achievements.achievements_list import BaseAchievement
+        import eray.signals.handlers
 
         super(ErayConfig, self).ready()
 

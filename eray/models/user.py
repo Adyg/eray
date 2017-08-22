@@ -3,11 +3,10 @@ import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 from eray.models.achievements import Achievement
-from eray.models.content import BaseVote
+from eray.models.content import (BaseVote, Question, Comment, Answer, BaseComment, )
+
 
 def avatar_directory(instance, filename):
     return '/'.join(['avatars', str(datetime.datetime.now().year), str(datetime.datetime.now().month), filename])
@@ -37,11 +36,21 @@ class Profile(models.Model):
 
         return BaseVote.objects.filter(user=self.user).aggregate(Sum('value'))['value__sum']
 
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
 
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
+class UserActionStream(models.Model):
+    """Actions log
+    Tracks all actions for a user
+    """
+    ACTION_TYPES = (
+        ('ASK', 'ASK'),
+        ('ANSWER', 'ANSWER'),
+        ('COMMENT', 'COMMENT'),
+        ('ACCEPTED', 'ACCEPTED'),
+        ('WAS_ACCEPTED', 'WAS_ACCEPTED'),
+    )
+
+    user = models.ForeignKey(User)
+    question = models.ForeignKey(Question, null=True, blank=True, on_delete=models.CASCADE)
+    answer = models.ForeignKey(Answer, null=True, blank=True, on_delete=models.CASCADE)
+    comment = models.ForeignKey(BaseComment, null=True, blank=True, on_delete=models.CASCADE)
+    action_type = models.CharField(max_length=50, choices=ACTION_TYPES )

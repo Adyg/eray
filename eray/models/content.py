@@ -341,3 +341,5 @@ class BaseView(models.Model):
     parent = models.ForeignKey(View)
     user = models.ForeignKey(User)
     value = models.IntegerField(default=1)
+
+    
