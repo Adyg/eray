@@ -36,6 +36,13 @@ class Profile(models.Model):
 
         return BaseVote.objects.filter(user=self.user).aggregate(Sum('value'))['value__sum']
 
+    def get_action_stream(self):
+        """Return the action stream for this profile
+        """
+
+        return UserActionStream.objects.filter(user=self.user).order_by('-pk').prefetch_related('user', 'question', 
+            'answer', 'answer__parent', 'comment', 'comment__parent', 'comment__parent__question', 'comment__parent__answer')
+
 
 class UserActionStream(models.Model):
     """Actions log
@@ -54,3 +61,6 @@ class UserActionStream(models.Model):
     answer = models.ForeignKey(Answer, null=True, blank=True, on_delete=models.CASCADE)
     comment = models.ForeignKey(BaseComment, null=True, blank=True, on_delete=models.CASCADE)
     action_type = models.CharField(max_length=50, choices=ACTION_TYPES )
+
+    class Meta:
+        unique_together = ('user', 'question', 'answer', 'comment', 'action_type', )

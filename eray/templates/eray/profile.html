@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load staticfiles achievements %}
+{% load staticfiles achievements action_stream %}
 
 {% block content %}
     <div class="row">
@@ -12,6 +12,9 @@
             {% endif %}
             <h3>Achievements</h3>
             {% achievements profile=user.profile %}
+
+            <h3>Action Stream</h3>
+            {% action_stream profile=user.profile %}
         </div>
     </div>
 {% endblock content %}

@@ -51,7 +51,7 @@ def homepage(request, tags=False):
         if order == 'answers':
             question_list = question_list.order_by('-answer_count')
 
-    paginator = ErayPaginator(question_list, 10)
+    paginator = ErayPaginator(question_list, MAX_RESULTS)
 
     try:
         questions = paginator.page(page)
@@ -260,8 +260,9 @@ def vote_down(request, pk):
 
 @login_required
 def accept_answer(request, answer_pk):
-    answer = get_object_or_404(Answer, pk=answer_pk, user=request.user)
-    answer.mark_accepted()
+    answer = get_object_or_404(Answer, pk=answer_pk)
+    if answer.parent.user == request.user:
+        answer.mark_accepted()
 
     return HttpResponseRedirect(reverse('question', kwargs={ 'pk': answer.parent.pk }))
 

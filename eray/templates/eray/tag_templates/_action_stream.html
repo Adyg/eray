@@ -1,0 +1,21 @@
+{% if action_stream %}
+    <ul class="action-stream">
+        {% for action in action_stream %}
+            <li>
+                {% if action.action_type == 'COMMENT' %}
+                    Commented on {% if action.comment.parent.question %}<a href="{% url 'question' pk=action.comment.parent.question.pk %}">{{ action.comment.parent.question.title }}</a>{% else %}<a href="{% url 'question' pk=action.comment.parent.answer.parent.pk %}">{{ action.comment.parent.answer.parent.title }}</a>{% endif %}.
+                {% elif  action.action_type == 'ASK' %}
+                    Asked <a href="{% url 'question' pk=action.question.pk %}">{{ action.question.title }}</a>.
+                {% elif action.action_type == 'ANSWER' %}
+                    Answered <a href="{% url 'question' pk=action.answer.parent.pk %}">{{ action.answer.parent.title }}</a>.
+                {% elif action.action_type == 'ACCEPTED' %}
+                    Accepted an answer on <a href="{% url 'question' pk=action.answer.parent.pk %}">{{ action.answer.parent.title }}</a>.
+                {% elif action.action_type == 'WAS_ACCEPTED' %}
+                    Answer on <a href="{% url 'question' pk=action.answer.parent.pk %}">{{ action.answer.parent.title }}</a> was accepted.
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p class="dust">Nothing here.</p>
+{% endif %}

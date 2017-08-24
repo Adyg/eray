@@ -18,7 +18,7 @@ def save_user_profile(sender, instance, **kwargs):
 # User Action Stream
 @receiver(post_save, sender=Question)
 def create_question(sender, instance, created, **kwargs):
-    if created:
+    if created and instance.user:
         UserActionStream.objects.create(user=instance.user, question=instance, action_type='ASK')
 
 @receiver(post_save, sender=BaseComment)
@@ -28,5 +28,15 @@ def create_comment(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=Answer)
 def create_answer(sender, instance, created, **kwargs):
-    if created:
-        UserActionStream.objects.create(user=instance.user, answer=instance, action_type='ANSWER')
+    if instance.user:
+        try:
+            UserActionStream.objects.create(user=instance.user, answer=instance, action_type='ANSWER')
+        except:
+            pass
+    elif instance.accepted:
+        # add Accepted actions to the action streams of both asker and answerer
+        try:
+            UserActionStream.objects.create(user=instance.user, answer=instance, action_type='WAS_ACCEPTED')
+            UserActionStream.objects.create(user=instance.parent.user, answer=instance, action_type='ACCEPTED')
+        except:
+            pass
