@@ -39,7 +39,7 @@ urlpatterns = [
     url(r'^tag-cloud/$', eray_views.tag_cloud, name='tag-cloud'),
 
     # question detail page
-    url(r'^question/(?P<pk>\d+)/$', eray_views.question, name='question'),
+    url(r'^question/(?P<slug>.*)/$', eray_views.question, name='question'),
 
     # vote up question
     url(r'^vote/up/question/(?P<pk>\d+)/$', eray_views.vote_up, name='vote-up'),    

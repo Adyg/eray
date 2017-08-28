@@ -182,10 +182,10 @@ def tag_autocomplete(request):
 
 
 @login_required
-def question(request, pk):
+def question(request, slug):
     """Individual question page
     """
-    question = Question.objects.get(pk=pk)
+    question = get_object_or_404(Question, slug=slug)
     post_answer_form = PostAnswer()
 
     question.track_view(request.user)

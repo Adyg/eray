@@ -4,7 +4,7 @@
     <div class="community-post-wrap clearfix row">
         <!-- Start .post -->
         <div class="post col-md-8">
-            <h3><a href="{% url 'question' pk=question.pk %}">{{ question.title }}</a></h3>
+            <h3>{% include 'eray/partials/_question_link.html' with question=question %}</h3>
             <div class="post-info clearfix">
                 <ul class="tags pull-left">
                     {% for tag in question.tags.all %}

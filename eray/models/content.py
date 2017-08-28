@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import datetime
 
+from slugify import slugify
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Avg, Max, Min, Sum
@@ -22,7 +23,6 @@ class BaseContent(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     user = models.ForeignKey(User, blank=True, null=True)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='A')
-
     # Denormalized counts
     vote_count = models.IntegerField(default=0)
     view_count = models.IntegerField(default=0)
@@ -168,7 +168,8 @@ class Question(BaseContent):
     Questions model
     """
     tags = models.ManyToManyField(Tag)
-    title = models.CharField(max_length=300)
+    title = models.CharField(max_length=140)
+    slug = models.CharField(db_index=True, max_length=140, blank=True, null=True)
 
     # default filtering will only be applied to active questions.
     # inactive and private questions have to be explicitly asked for by using Question.all_objects
@@ -205,6 +206,14 @@ class Question(BaseContent):
             questions.append(answer.parent)
 
         return questions
+
+    def save(self, *args, **kwargs):
+        """Override save() to set the question slug
+        """
+        self.slug = slugify(self.title)
+
+        super(Question, self).save(*args, **kwargs)
+
 
 
 class AllAnswerManager(models.Manager):
