@@ -155,7 +155,7 @@ def post_question(request):
 
             messages.add_message(request, messages.INFO, 'Question successfully created.')
 
-            return redirect(reverse('question', kwargs={ 'pk': question.pk }))
+            return redirect(reverse('question', kwargs={ 'slug': question.slug }))
 
     return render(request, 'eray/post_question.html', {
         'post_question_form': post_question_form,
@@ -206,7 +206,7 @@ def question(request, slug):
 
             messages.add_message(request, messages.INFO, 'Answer successfully created.')
 
-            return redirect(reverse('question', kwargs={'pk': question.pk}))
+            return redirect(reverse('question', kwargs={'slug': question.slug}))
 
     question_answers =  question.answer_set.all().order_by('-accepted')
     voted_answers = request.user.profile.get_voted_answers(question_answers)
@@ -268,7 +268,7 @@ def accept_answer(request, answer_pk):
     if answer.parent.user == request.user:
         answer.mark_accepted()
 
-    return HttpResponseRedirect(reverse('question', kwargs={ 'pk': answer.parent.pk }))
+    return HttpResponseRedirect(reverse('question', kwargs={ 'slug': answer.parent.slug }))
 
 
 @login_required

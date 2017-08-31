@@ -168,7 +168,7 @@ class Question(BaseContent):
     Questions model
     """
     tags = models.ManyToManyField(Tag)
-    title = models.CharField(max_length=140)
+    title = models.CharField(max_length=140, unique=True)
     slug = models.CharField(db_index=True, max_length=140, blank=True, null=True)
 
     # default filtering will only be applied to active questions.
