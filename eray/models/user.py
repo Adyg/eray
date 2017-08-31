@@ -110,3 +110,17 @@ class UserActionStream(models.Model):
 
     class Meta:
         unique_together = ('user', 'question', 'answer', 'comment', 'action_type', )
+
+
+class UserNotification(models.Model):
+    """Notification log
+    """
+    NOTIFICATION_TYPES = (
+        ('NEW_ANSWER', 'NEW_ANSWER'),
+        ('NEW_COMMENT', 'NEW_COMMENT'),
+        ('ANSWER_ACCEPTED', 'ANSWER_ACCEPTED'),
+    )
+
+    user = models.ForeignKey(User)
+    question = models.ForeignKey(Question, null=True, blank=True, on_delete=models.CASCADE)
+    notification_type = models.CharField(max_length=50, choices=NOTIFICATION_TYPES )    
