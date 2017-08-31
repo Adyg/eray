@@ -225,16 +225,20 @@ body {
   font-size: 3em; }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000395}}
+.voted {
+  color: #5cb85c; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000399}}
 .poster-details {
   text-align: right; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\0000399}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\00003103}}
 .comment-form {
   display: none; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\00003102}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\00003106}}
   .comment-form.active {
     display: block; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\00003106}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/vagrant_data\/static\/sass\/eray\.scss}line{font-family:\00003110}}
   .comment-form textarea {
     height: 100px;
     width: 100%; }

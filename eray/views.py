@@ -209,6 +209,8 @@ def question(request, slug):
             return redirect(reverse('question', kwargs={'pk': question.pk}))
 
     question_answers =  question.answer_set.all().order_by('-accepted')
+    voted_answers = request.user.profile.get_voted_answers(question_answers)
+    voted_questions = request.user.profile.get_voted_questions([question])
 
     if not request.user.is_superuser:
         question_answers = question_answers.filter(Q(status='A') | Q(user=request.user))
@@ -217,6 +219,8 @@ def question(request, slug):
         'question': question,
         'question_answers': question_answers,
         'post_answer_form': post_answer_form,
+        'voted_answers': voted_answers,
+        'voted_questions': voted_questions,
     })
 
 

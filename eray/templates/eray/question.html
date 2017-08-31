@@ -13,7 +13,7 @@ question-page community-page
         <div class="question-info">
             <div class="question-stats">
                 <div class="controls">
-                    <a href="{% url 'vote-up' pk=question.pk %}" class="vote vote-up">
+                    <a href="{% url 'vote-up' pk=question.pk %}" class="vote vote-up {% if question in voted_questions.positive_votes %}voted{% endif %}">
                         <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
                     </a>
                     <ul class="clearfix">
@@ -30,7 +30,7 @@ question-page community-page
                             <p class="count-action">Answers</p>
                         </li>
                     </ul>
-                    <a href="{% url 'vote-down' pk=question.pk %}" class="vote vote-down">
+                    <a href="{% url 'vote-down' pk=question.pk %}" class="vote vote-down {% if question in voted_questions.negative_votes %}voted{% endif %}">
                         <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
                     </a>
                 </div>            
@@ -103,7 +103,7 @@ question-page community-page
                     <div class="row">
                         <div class="col-md-1">
                             <div class="controls">
-                                <a href="{% url 'vote-up-answer' pk=answer.pk %}" class="vote vote-up">
+                                <a href="{% url 'vote-up-answer' pk=answer.pk %}" class="vote vote-up {% if answer in voted_answers.positive_votes %}voted{% endif %}">
                                     <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
                                 </a>
                                 <ul class="clearfix">
@@ -112,7 +112,7 @@ question-page community-page
                                         <p class="count-action">Votes</p>
                                     </li>
                                 </ul>
-                                <a href="{% url 'vote-down-answer' pk=answer.pk %}" class="vote vote-down">
+                                <a href="{% url 'vote-down-answer' pk=answer.pk %}" class="vote vote-down {% if answer in voted_answers.negative_votes %}voted{% endif %}">
                                     <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
                                 </a>
                                 {% if question.user.pk == request.user.pk %}

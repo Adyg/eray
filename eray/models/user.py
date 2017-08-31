@@ -43,6 +43,52 @@ class Profile(models.Model):
         return UserActionStream.objects.filter(user=self.user).order_by('-pk').prefetch_related('user', 'question', 
             'answer', 'answer__parent', 'comment', 'comment__parent', 'comment__parent__question', 'comment__parent__answer')
 
+    def get_voted_answers(self, answer_list=False):
+        """Retrieve a dictionary with all answers the user voted on
+
+        If answer_list is provided, only the intersection of answer_list 
+        and the answers the user voted on will be returned
+        """
+        base_votes = BaseVote.objects.filter(user__profile=self).exclude(parent__answer__isnull=True).select_related('parent', 'parent__answer')
+        if answer_list:
+            base_votes = base_votes.filter(parent__answer__in=answer_list)
+
+        voted_answers = {
+            'positive_votes': [],
+            'negative_votes': [],
+        }
+
+        for vote in base_votes:
+            if vote.value > 0:
+                voted_answers['positive_votes'].append(vote.parent.answer)
+            else:
+                voted_answers['negative_votes'].append(vote.parent.answer)
+
+        return voted_answers
+
+    def get_voted_questions(self, question_list=False):
+        """Retrieve a dictionary with all questions the user voted on
+
+        If question_list is provided, only the intersection of question_list 
+        and the questions the user voted on will be returned
+        """
+        base_votes = BaseVote.objects.filter(user__profile=self).exclude(parent__question__isnull=True).select_related('parent', 'parent__question')
+        if question_list:
+            base_votes = base_votes.filter(parent__question__in=question_list)
+
+        voted_questions = {
+            'positive_votes': [],
+            'negative_votes': [],
+        }
+
+        for vote in base_votes:
+            if vote.value > 0:
+                voted_questions['positive_votes'].append(vote.parent.question)
+            else:
+                voted_questions['negative_votes'].append(vote.parent.question)
+
+        return voted_questions
+
 
 class UserActionStream(models.Model):
     """Actions log
