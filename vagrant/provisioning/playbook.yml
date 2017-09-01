@@ -96,11 +96,17 @@
         - openjdk-8-jdk
     - geerlingguy.solr
 
-  post_tasks:
+- hosts: all
+  become: yes
+
+  vars_files:
+    - vars/main.yml
+
+  tasks:
   - name: Copy Solr schema
     copy:
       src: ../../solr_schema.xml
       dest: /var/solr/collection1/conf/schema.xml
-    handlers:
-      - name: restart Solr
-        service: name=solr state=restarted      
+
+  - name: restart Solr
+    service: name=solr state=restarted      
