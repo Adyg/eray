@@ -112,7 +112,20 @@ class UserActionStream(models.Model):
         unique_together = ('user', 'question', 'answer', 'comment', 'action_type', )
 
 
-class UserNotification(models.Model):
+class UserNotificationSetting(models.Model):
+    """Settings for user notifications
+    """
+    user = models.ForeignKey(User)
+    notify_instant = models.BooleanField(default=False)
+    notify_hourly = models.BooleanField(default=False)
+    notify_daily = models.BooleanField(default=True)
+    notify_weekly = models.BooleanField(default=False)
+
+    notify_comment = models.BooleanField(default=True)
+    notify_answer = models.BooleanField(default=True)
+
+
+class UserNotificationStream(models.Model):
     """Notification log
     """
     NOTIFICATION_TYPES = (
