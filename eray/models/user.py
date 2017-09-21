@@ -99,6 +99,22 @@ class Profile(models.Model):
         return voted_questions
 
 
+class UserActionStreamManager(models.Manager):
+    def create(self, *args, **kwargs):
+        try:
+            self.get(
+                user=kwargs['user'],
+                question=kwargs['question'],
+                answer=kwargs['answer'],
+                comment=kwargs['comment'],
+                action_type=kwargs['action_type'],
+            )
+        except:
+            return super(UserActionStreamManager, self).create(*args, **kwargs)  
+
+        return False
+
+
 class UserActionStream(models.Model):
     """Actions log
     Tracks all actions for a user
@@ -117,8 +133,7 @@ class UserActionStream(models.Model):
     comment = models.ForeignKey(BaseComment, null=True, blank=True, on_delete=models.CASCADE)
     action_type = models.CharField(max_length=50, choices=ACTION_TYPES )
 
-    class Meta:
-        unique_together = ('user', 'question', 'answer', 'comment', 'action_type', )
+    objects = UserActionStreamManager()
 
 
 class UserNotificationStream(models.Model):
