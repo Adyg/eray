@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.db.models import Sum
 
 from eray.models.achievements import Achievement
-from eray.models.content import (BaseVote, Question, Comment, Answer, BaseComment, )
+from eray.models.content import (BaseVote, Question, Comment, Answer, BaseComment, Tag, )
 
 
 def avatar_directory(instance, filename):
@@ -15,6 +15,15 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to=avatar_directory)
     achievements = models.ManyToManyField(Achievement)
+
+    #notification settings
+    notify_instant = models.BooleanField(default=False)
+    notify_hourly = models.BooleanField(default=False)
+    notify_daily = models.BooleanField(default=True)
+    notify_weekly = models.BooleanField(default=False)
+
+    notify_comment = models.BooleanField(default=True)
+    notify_answer = models.BooleanField(default=True)    
 
     def get_long_name(self):
     	"""Returns the First name and Last name
@@ -112,19 +121,6 @@ class UserActionStream(models.Model):
         unique_together = ('user', 'question', 'answer', 'comment', 'action_type', )
 
 
-class UserNotificationSetting(models.Model):
-    """Settings for user notifications
-    """
-    user = models.ForeignKey(User)
-    notify_instant = models.BooleanField(default=False)
-    notify_hourly = models.BooleanField(default=False)
-    notify_daily = models.BooleanField(default=True)
-    notify_weekly = models.BooleanField(default=False)
-
-    notify_comment = models.BooleanField(default=True)
-    notify_answer = models.BooleanField(default=True)
-
-
 class UserNotificationStream(models.Model):
     """Notification log
     """
@@ -132,8 +128,24 @@ class UserNotificationStream(models.Model):
         ('NEW_ANSWER', 'NEW_ANSWER'),
         ('NEW_COMMENT', 'NEW_COMMENT'),
         ('ANSWER_ACCEPTED', 'ANSWER_ACCEPTED'),
+        ('NEW_QUESTION', 'NEW_QUESTION'),
     )
 
     user = models.ForeignKey(User)
     question = models.ForeignKey(Question, null=True, blank=True, on_delete=models.CASCADE)
-    notification_type = models.CharField(max_length=50, choices=NOTIFICATION_TYPES )    
+    tag = models.ForeignKey(Tag, null=True, blank=True, on_delete=models.CASCADE)
+    notification_type = models.CharField(max_length=50, choices=NOTIFICATION_TYPES)
+
+
+class UserSubscribedQuestion(models.Model):
+    """Questions an User is subscribed to
+    """
+    user = models.ForeignKey(User)
+    question = models.ForeignKey(Question)
+
+
+class UserSubscribedTag(models.Model):
+    """Tags an User is subscribed to
+    """
+    user = models.ForeignKey(User)
+    tag = models.ForeignKey(Tag)
