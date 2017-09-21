@@ -18,13 +18,17 @@ def save_user_profile(sender, instance, **kwargs):
 # User Action Stream
 @receiver(post_save, sender=Question)
 def create_question(sender, instance, created, **kwargs):
-    if created and instance.user:
+    try:
         UserActionStream.objects.create(user=instance.user, question=instance, action_type='ASK')
+    except:
+        pass
 
 @receiver(post_save, sender=BaseComment)
 def create_comment(sender, instance, created, **kwargs):
-    if created:
+    try:
         UserActionStream.objects.create(user=instance.user, comment=instance, action_type='COMMENT')
+    except:
+        pass
 
 @receiver(post_save, sender=Answer)
 def create_answer(sender, instance, created, **kwargs):
