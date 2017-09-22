@@ -221,6 +221,7 @@ def question(request, slug):
         'post_answer_form': post_answer_form,
         'voted_answers': voted_answers,
         'voted_questions': voted_questions,
+        'is_subscribed': request.user.profile.is_subscribed_to_question(question),
     })
 
 

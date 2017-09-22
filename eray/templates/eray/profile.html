@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load staticfiles achievements action_stream %}
+{% load staticfiles achievements action_stream subscriptions %}
 
 {% block content %}
     <div class="row">
@@ -15,6 +15,8 @@
 
             <h3>Action Stream</h3>
             {% action_stream profile=user.profile %}
+
+            {% subscriptions profile=user.profile %}
         </div>
     </div>
 {% endblock content %}

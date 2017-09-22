@@ -1,0 +1,17 @@
+{% if question_subscriptions %}
+<h3>Subscribed Questions</h3>
+    <ul>
+        {% for question_subscription in question_subscriptions %}
+            <li>{% include 'eray/partials/_question_link.html' with question=question_subscription.subscribed_obj %}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% if tag_subscriptions %}
+<h3>Subscribed Tags</h3>
+    <ul>
+        {% for tag_subscription in tag_subscriptions %}
+            <li>{% include 'eray/partials/_tag.html' with tag=tag_subscription.subscribed_obj %}</li>
+        {% endfor %}
+    </ul>
+{% endif %}

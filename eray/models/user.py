@@ -108,6 +108,24 @@ class Profile(models.Model):
         """
         UserSubscribedTag.toggle(user=self.user, subscribed_obj=tag)
 
+    def is_subscribed_to_question(self, question):
+        """Check if the user is subscribed to a question
+        """
+
+        return UserSubscribedQuestion.is_subscribed(self.user, question)
+
+    def get_question_subscriptions(self):
+        """Retrieve all the questions an user is subscribed to
+        """
+
+        return UserSubscribedQuestion.get_subscriptions(self.user)
+
+    def get_tag_subscriptions(self):
+        """Retrieve all the tags an user is subscribed to
+        """
+
+        return UserSubscribedTag.get_subscriptions(self.user)
+
 
 class UserActionStreamManager(models.Manager):
     def create(self, *args, **kwargs):
@@ -194,12 +212,24 @@ class ToggleableSubscription(models.Model):
 
         return True
 
+    @classmethod
+    def is_subscribed(self, user, subscribed_obj):
+        """Check if a subscription exists
+        """
+
+        return self.objects.filter(user=user, subscribed_obj=subscribed_obj).exists()
+
 
 class UserSubscribedQuestion(ToggleableSubscription):
     """Questions an User is subscribed to
     """
     user = models.ForeignKey(User)
     subscribed_obj = models.ForeignKey(Question)
+
+    @classmethod
+    def get_subscriptions(self, user):
+
+        return self.objects.filter(user=user)
 
 
 class UserSubscribedTag(ToggleableSubscription):
@@ -208,3 +238,7 @@ class UserSubscribedTag(ToggleableSubscription):
     user = models.ForeignKey(User)
     subscribed_obj = models.ForeignKey(Tag)
 
+    @classmethod
+    def get_subscriptions(self, user):
+
+        return self.objects.filter(user=user)
