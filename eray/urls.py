@@ -39,7 +39,7 @@ urlpatterns = [
     url(r'^tag-cloud/$', eray_views.tag_cloud, name='tag-cloud'),
 
     # question detail page
-    url(r'^question/(?P<slug>.*)/$', eray_views.question, name='question'),
+    url(r'^question/(?P<slug>[\w-]+)/$', eray_views.question, name='question'),
 
     # vote up question
     url(r'^vote/up/question/(?P<pk>\d+)/$', eray_views.vote_up, name='vote-up'),    
@@ -57,10 +57,10 @@ urlpatterns = [
     url(r'^accept/answer/(?P<answer_pk>\d+)/$', eray_views.accept_answer, name='accept-answer'),
 
     # question comment
-    url(r'^question/comment/$', eray_views.question_comment, name='question-comment'),     
+    url(r'^question/add/comment/$', eray_views.question_comment, name='question-comment'),     
 
     # answer comment
-    url(r'^answer/comment/$', eray_views.answer_comment, name='answer-comment'),     
+    url(r'^answer/add/comment/$', eray_views.answer_comment, name='answer-comment'),     
 
     # user profile
     url(r'^profile/(?P<username>.*)$', eray_views.profile, name='profile')
