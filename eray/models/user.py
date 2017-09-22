@@ -101,15 +101,22 @@ class Profile(models.Model):
 
 class UserActionStreamManager(models.Manager):
     def create(self, *args, **kwargs):
+        #ensure no duplicate notifications
+        filters = {
+            'user': kwargs['user'],
+            'action_type': kwargs['action_type'],
+        }
+        if 'question' in kwargs:
+            filters['question'] = kwargs['question']
+        if 'answer' in kwargs:
+            filters['answer'] = kwargs['answer']
+        if 'comment' in kwargs:
+            filters['comment'] = kwargs['comment']
+
         try:
-            self.get(
-                user=kwargs['user'],
-                question=kwargs['question'],
-                answer=kwargs['answer'],
-                comment=kwargs['comment'],
-                action_type=kwargs['action_type'],
-            )
+            self.get(**filters)
         except:
+
             return super(UserActionStreamManager, self).create(*args, **kwargs)  
 
         return False
