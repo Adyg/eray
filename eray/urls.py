@@ -3,7 +3,8 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.views.generic import TemplateView
 
-from eray import views as eray_views
+from eray.views import general as eray_views
+from eray.views import content as content_views
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -63,7 +64,11 @@ urlpatterns = [
     url(r'^answer/add/comment/$', eray_views.answer_comment, name='answer-comment'),     
 
     # user profile
-    url(r'^profile/(?P<username>.*)$', eray_views.profile, name='profile')
+    url(r'^profile/(?P<username>.*)$', eray_views.profile, name='profile'),
+
+    #subscribe
+    url(r'^subscribe/question/(?P<question_pk>\d+)/$', content_views.subscribe_question, name='subscribe-question'),
+    url(r'^subscribe/tag/(?P<tag_pk>\d+)/$', content_views.subscribe_tag, name='subscribe-tag'),        
 ]
 
 # Uncomment the next line to serve media files in dev.

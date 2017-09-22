@@ -98,6 +98,16 @@ class Profile(models.Model):
 
         return voted_questions
 
+    def toggle_subscribe_question(self, question):
+        """Toggle subscription of a user to a Question
+        """
+        UserSubscribedQuestion.toggle(user=self.user, subscribed_obj=question)
+
+    def toggle_subscribe_tag(self, tag):
+        """Toggle subscription of a user to a Tag
+        """
+        UserSubscribedTag.toggle(user=self.user, subscribed_obj=tag)
+
 
 class UserActionStreamManager(models.Manager):
     def create(self, *args, **kwargs):
@@ -159,15 +169,42 @@ class UserNotificationStream(models.Model):
     notification_type = models.CharField(max_length=50, choices=NOTIFICATION_TYPES)
 
 
-class UserSubscribedQuestion(models.Model):
+class ToggleableSubscription(models.Model):
+
+    class Meta:
+        unique_together = ('user', 'subscribed_obj', )
+        abstract = True
+
+    @classmethod
+    def toggle(self, user, subscribed_obj):
+        """If a subscription exists, remove it. If not, create it
+        """
+        subscription = False
+        try:
+            subscription = self.objects.get(user=user, subscribed_obj=subscribed_obj)
+        except:
+            pass
+
+        if subscription:
+            subscription.delete()
+
+            return False
+
+        subscription = self.objects.create(user=user, subscribed_obj=subscribed_obj)
+
+        return True
+
+
+class UserSubscribedQuestion(ToggleableSubscription):
     """Questions an User is subscribed to
     """
     user = models.ForeignKey(User)
-    question = models.ForeignKey(Question)
+    subscribed_obj = models.ForeignKey(Question)
 
 
-class UserSubscribedTag(models.Model):
+class UserSubscribedTag(ToggleableSubscription):
     """Tags an User is subscribed to
     """
     user = models.ForeignKey(User)
-    tag = models.ForeignKey(Tag)
+    subscribed_obj = models.ForeignKey(Tag)
+

@@ -42,6 +42,9 @@ question-page community-page
                     {% endfor %}
                 </ul>        
             </div>
+            <div class="question-actions">
+                <a class="subscribe" href="{% url 'subscribe-question' question_pk=question.pk %}">Subscribe</a>
+            </div>
         </div>
     </div>
 

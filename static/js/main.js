@@ -62,11 +62,28 @@ var Eray = { };
                 $counter = $this.parents('.controls:first').find('.votes .count');
 
             $.ajax({
-                url: $(this).attr('href'), 
+                url: $this.attr('href'), 
                 success: function(result){
                     $counter.html(result);
                 }
             });            
+        });
+    }
+
+    /**
+    * Tag & Question subscribe
+    * 
+    */
+    Eray.subscribe = function() {
+        var $subscribeTriggers = $('.subscribe');
+
+        $subscribeTriggers.on('click', function(e){
+            e.preventDefault();
+            var $this = $(this);
+
+            $.ajax({
+                url: $this.attr('href')
+            });
         });
     }
 
@@ -131,6 +148,7 @@ var Eray = { };
         Eray.markdown($('.markdown textarea'));
         Eray.communityFilter($('.community-filter select'));
         Eray.vote();
+        Eray.subscribe();
         Eray.comments();
     }
 
