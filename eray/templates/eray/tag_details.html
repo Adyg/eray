@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 profile-wrap">
+            <h1>{{ tag.name }}</h1>
+            {% if tag.description %}
+                <p>{{ tag.description }}</p>
+            {% endif %}
+
+            <h3>Questions</h3>
+            {% include 'eray/partials/_questions_list.html' with questions=related_questions %}
+        </div>
+    </div>
+{% endblock content %}

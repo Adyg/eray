@@ -26,3 +26,16 @@ def subscribe_tag(request, tag_pk):
 
     return HttpResponse('')
 
+
+def tag_details(request, tag):
+    """ Tag details page
+    Listing the tag description along with example content tagged with it
+    """
+    tag = get_object_or_404(Tag, name=tag)
+
+    related_questions = tag.questions.all().order_by('-created_at')[:5]
+
+    return render(request, 'eray/tag_details.html', {
+        'tag': tag,
+        'related_questions': related_questions,
+    })

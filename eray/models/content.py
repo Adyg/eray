@@ -117,6 +117,8 @@ class Tag(models.Model):
     name = models.CharField(max_length=80)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='A')
 
+    description = models.TextField(max_length=300, blank=True, null=True)
+
     # default filtering will only be applied to active tags. Inactive tags
     # have to be explicitly asked for by using Tag.all_objects
     objects = TagManager()
@@ -167,7 +169,7 @@ class Question(BaseContent):
     """
     Questions model
     """
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, related_name="questions")
     title = models.CharField(max_length=140, unique=True)
     slug = models.CharField(db_index=True, max_length=140, blank=True, null=True)
 

@@ -36,6 +36,9 @@ urlpatterns = [
     # tag autocomplete, called via AJAX
     url(r'^tag-autocomplete/$', eray_views.tag_autocomplete, name='tag-autocomplete'),
 
+    # tag details
+    url(r'^tag/(?P<tag>.*)/$', content_views.tag_details, name='tag-details'),
+
     # tag cloud
     url(r'^tag-cloud/$', eray_views.tag_cloud, name='tag-cloud'),
 
