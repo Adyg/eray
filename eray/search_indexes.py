@@ -9,6 +9,7 @@ class QuestionIndex(indexes.SearchIndex, indexes.Indexable):
     title = indexes.CharField(model_attr='title')
     tags = indexes.MultiValueField()
     slug = indexes.CharField(model_attr='slug')
+    spelling_suggestions = indexes.FacetCharField()
 
     def get_model(self):
         return Question

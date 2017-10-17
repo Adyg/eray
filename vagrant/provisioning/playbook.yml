@@ -108,5 +108,10 @@
       src: ../../solr_schema.xml
       dest: /var/solr/collection1/conf/schema.xml
 
+  - name: Copy Solr config
+    copy:
+      src: ../../solrconfig.xml
+      dest: /var/solr/collection1/conf/solrconfig.xml
+
   - name: restart Solr
     service: name=solr state=restarted      

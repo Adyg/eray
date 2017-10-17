@@ -8,7 +8,7 @@
         <div class="col-md-12">
             {% include 'eray/partials/_filter.html' with order=order %}
 
-            {% include 'eray/partials/_pager.html' with pager=questions order=order %}
+            {% include 'eray/partials/_pager.html' with pager=questions query_string='&order='|add:order %}
         </div>
     </div>
 
@@ -20,7 +20,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            {% include 'eray/partials/_pager.html' with pager=questions order=order %}
+            {% include 'eray/partials/_pager.html' with pager=questions query_string='&order='|add:order %}
         </div>
     </div>
 {% endblock content %}

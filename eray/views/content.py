@@ -13,6 +13,8 @@ from django.views.decorators.csrf import csrf_exempt
 from haystack.query import SearchQuerySet
 
 from eray.models.content import (Question, Tag, )
+from eray.lib.eray_paginator import ErayPaginator
+
 
 @login_required
 def subscribe_question(request, question_pk):
@@ -44,16 +46,31 @@ def tag_details(request, tag):
 
 
 def search(request, search_query):
-    search_result_page_size = 10
+    MAX_RESULTS = 10
     results = SearchQuerySet()
     results = results.filter(text=search_query)
     results_count = results.count()    
 
     page = request.GET.get('page', 1)
-    results_page = results[search_result_page_size*(page-1):search_result_page_size*page]
+    #results_page = results[search_result_page_size*(page-1):search_result_page_size*page]
+
+    paginator = ErayPaginator(results, MAX_RESULTS)
+
+    try:
+        results_page = paginator.page(page)
+    except PageNotAnInteger:
+        results_page = paginator.page(1)
+    except EmptyPage:
+        results_page = paginator.page(paginator.num_pages)
+
+    spelling_suggestion = results.spelling_suggestion(search_query)
+    # spelling_suggestion is returned in the "text:(suggestion)". Extract the suggestion
+    if spelling_suggestion:
+        spelling_suggestion = spelling_suggestion.replace('text:(', '').replace(')', '')
 
     return render(request, 'eray/search.html', {
         'results': results_page,
         'results_count': results_count,
         'search_query': search_query,
+        'spelling_suggestion': spelling_suggestion,
     })

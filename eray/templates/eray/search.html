@@ -6,7 +6,9 @@
     <div class="row">
         <div class="col-md-12 search-wrap">
             <h1>{{ results_count }} search results for <span>"{{ search_query }}"</h1>
-
+            {% if spelling_suggestion %}
+                <p>Did you mean <a href="{% url 'search' search_query=spelling_suggestion %}">{{ spelling_suggestion }}</a></p>
+            {% endif %}
             <div class="search-results">
                 {% for result in results %}
                     {% include 'eray/partials/_search_result.html' with result=result %}
@@ -14,4 +16,9 @@
             </div>            
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'eray/partials/_pager.html' with pager=results query_string='&q='|add:search_query %}
+        </div>
+    </div>    
 {% endblock content %}
