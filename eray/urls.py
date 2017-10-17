@@ -71,7 +71,11 @@ urlpatterns = [
 
     #subscribe
     url(r'^subscribe/question/(?P<question_pk>\d+)/$', content_views.subscribe_question, name='subscribe-question'),
-    url(r'^subscribe/tag/(?P<tag_pk>\d+)/$', content_views.subscribe_tag, name='subscribe-tag'),        
+    url(r'^subscribe/tag/(?P<tag_pk>\d+)/$', content_views.subscribe_tag, name='subscribe-tag'),
+
+    #search
+    url(r'^search/(?P<search_query>.*)/$', content_views.search, name='search'),
+    url(r'^search/$', content_views.search, name='search-blank'),
 ]
 
 # Uncomment the next line to serve media files in dev.

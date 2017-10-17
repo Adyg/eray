@@ -41,9 +41,9 @@
           <a class="navbar-brand" href="{% url 'home' %}">ERAY</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right">
+          <form class="navbar-form navbar-right" action="{% url 'search-blank' %}" method="GET">
             <div class="form-group">
-              <input type="text" placeholder="Search for a question" class="form-control">
+              <input type="text" name="q" placeholder="Search for a question" class="form-control">
             </div>
             <button type="submit" class="btn btn-success">Search</button>
           </form>

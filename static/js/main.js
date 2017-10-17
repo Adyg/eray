@@ -142,6 +142,20 @@ var Eray = { };
         commentFormSubmit();
     }
 
+    /**
+    * Handle search related forms
+    *
+    */
+    Eray.search_form = function($form) {
+        $form.on('submit', function(e) {
+            e.preventDefault();
+            var $input = $form.find('input:first');
+
+            if($input.val()) {
+                window.location.href = $form.attr('action') + $input.val();
+            }
+        });
+    }
 
     Eray.initAll = function() {
         Eray.autocomplete($('.autocomplete'));
@@ -150,6 +164,7 @@ var Eray = { };
         Eray.vote();
         Eray.subscribe();
         Eray.comments();
+        Eray.search_form($('#navbar form'));
     }
 
     Eray.initAll();

@@ -11,7 +11,7 @@
 <h3>Subscribed Tags</h3>
     <ul>
         {% for tag_subscription in tag_subscriptions %}
-            <li>{% include 'eray/partials/_tag.html' with tag=tag_subscription.subscribed_obj %}</li>
+            <li>{% include 'eray/partials/_tag.html' with tag=tag_subscription.subscribed_obj.name %}</li>
         {% endfor %}
     </ul>
 {% endif %}

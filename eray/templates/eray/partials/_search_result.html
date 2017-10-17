@@ -1,0 +1,11 @@
+<div class="search-result">
+    <h2>{% include 'eray/partials/_question_link.html' with question=result %}</h2>
+    {% if result.tags %}
+        <div class="search-breadcrumb">
+            <u>Tagged</u>: 
+            {% for tag in result.tags %}
+                {% include 'eray/partials/_tag.html' with tag=tag %}
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>

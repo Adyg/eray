@@ -8,7 +8,7 @@
             <div class="post-info clearfix">
                 <ul class="tags pull-left">
                     {% for tag in question.tags.all %}
-                        <li>{% include 'eray/partials/_tag.html' with tag=tag %}</li>
+                        <li>{% include 'eray/partials/_tag.html' with tag=tag.name %}</li>
                     {% endfor %}
                 </ul>
                 <div class="poster pull-right">

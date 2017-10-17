@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 search-wrap">
+            <h1>{{ results_count }} search results for <span>"{{ search_query }}"</h1>
+
+            <div class="search-results">
+                {% for result in results %}
+                    {% include 'eray/partials/_search_result.html' with result=result %}
+                {% endfor %}
+            </div>            
+        </div>
+    </div>
+{% endblock content %}
