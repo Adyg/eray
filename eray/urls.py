@@ -67,7 +67,10 @@ urlpatterns = [
     url(r'^answer/add/comment/$', eray_views.answer_comment, name='answer-comment'),     
 
     # user profile
-    url(r'^profile/(?P<username>.*)$', eray_views.profile, name='profile'),
+    url(r'^profile/(?P<username>[\w-]+)$', eray_views.profile, name='profile'),
+
+    # user subscriptions
+    url(r'^profile/(?P<username>[\w-]+)/subscriptions/$', eray_views.subscriptions, name='subscriptions'),
 
     #subscribe
     url(r'^subscribe/question/(?P<question_pk>\d+)/$', content_views.subscribe_question, name='subscribe-question'),

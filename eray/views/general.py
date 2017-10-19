@@ -386,3 +386,19 @@ def profile(request, username):
     return render(request, 'eray/profile.html', {
         'user': user,
     })
+
+@login_required
+def subscriptions(request, username):
+    """User subscriptions page
+    """
+    print(username)
+    user = get_object_or_404(User, username=username)
+
+    subscribed_questions = user.profile.get_question_subscriptions()
+    subscribed_tags = user.profile.get_tag_subscriptions()
+
+    return render(request, 'eray/subscriptions.html', {
+        'user': user,
+        'subscribed_questions': subscribed_questions,
+        'subscribed_tags': subscribed_tags,
+    })

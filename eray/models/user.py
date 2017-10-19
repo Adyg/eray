@@ -241,7 +241,7 @@ class UserSubscribedQuestion(ToggleableSubscription):
     @classmethod
     def get_subscriptions(self, user):
 
-        return self.objects.filter(user=user)
+        return self.objects.filter(user=user).select_related('subscribed_obj')
 
 
 class UserSubscribedTag(ToggleableSubscription):
@@ -253,4 +253,4 @@ class UserSubscribedTag(ToggleableSubscription):
     @classmethod
     def get_subscriptions(self, user):
 
-        return self.objects.filter(user=user)
+        return self.objects.filter(user=user).select_related('subscribed_obj')

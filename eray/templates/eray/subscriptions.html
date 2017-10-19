@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% load staticfiles achievements action_stream subscriptions %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 profile-wrap">
+            <h1>Subscriptions</h1>
+
+            <h3>Questions</h3>
+            <ul>
+                {% for subscription in subscribed_questions %}
+                    <li>{{ subscription.subscribed_obj.title }} {% include 'eray/partials/links/_subscribe_question.html' with question_pk=subscription.subscribed_obj.pk is_subscribed=True %}</li>
+                {% endfor %}
+            </ul>
+
+            <h3>Tags</h3>
+            <ul>
+                {% for subscription in subscribed_tags %}
+                    <li>{% include 'eray/partials/_tag.html' with tag=subscription.subscribed_obj.name %} {% include 'eray/partials/links/_subscribe_tag.html' with tag_pk=subscription.subscribed_obj.pk is_subscribed=True %}</li>
+                {% endfor %}
+            </ul>
+
+        </div>
+    </div>
+{% endblock content %}
