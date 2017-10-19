@@ -9,7 +9,7 @@
             {% if tag.description %}
                 <p>{{ tag.description }}</p>
             {% endif %}
-
+            {% include 'eray/partials/links/_subscribe_tag.html' with tag_pk=tag.pk is_subscribed=is_subscribed %}
             <h3>Questions</h3>
             {% include 'eray/partials/_questions_list.html' with questions=related_questions %}
         </div>

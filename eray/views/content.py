@@ -39,9 +39,15 @@ def tag_details(request, tag):
 
     related_questions = tag.questions.all().order_by('-created_at')[:5]
 
+    try:
+        is_subscribed = request.user.profile.is_subscribed_to_tag(tag)
+    except:
+        is_subscribed = False
+
     return render(request, 'eray/tag_details.html', {
         'tag': tag,
         'related_questions': related_questions,
+        'is_subscribed': is_subscribed,
     })
 
 

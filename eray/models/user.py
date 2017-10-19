@@ -126,6 +126,18 @@ class Profile(models.Model):
 
         return UserSubscribedTag.get_subscriptions(self.user)
 
+    def is_subscribed_to_tag(self, tag):
+        """Check if the user is subscribed to a Tag
+        """
+
+        return UserSubscribedTag.objects.filter(subscribed_obj=tag, user=self.user).exists()
+
+    def is_subscribed_to_question(self, question):
+        """Check if the user is subscribed to a Question
+        """
+
+        return UserSubscribedQuestion.objects.filter(subscribed_obj=question, user=self.user).exists()
+
 
 class UserActionStreamManager(models.Manager):
     def create(self, *args, **kwargs):
