@@ -1,11 +1,11 @@
 <div class="form-group {% if field.errors %}has-errors{% endif %} {{ wrapper_classes }}">
+    {% if label %}
+        <label for="id_{{ for }}">{{ label }}</label>
+    {% endif %}
     <div class="danger">
         {% for error in field.errors %}
             <p class="text-danger">{{ error }}</p>
         {% endfor %}
     </div>
-    {% if label %}
-        <label for="id_{{ for }}">{{ label }}</label>
-    {% endif %}
     {{ field }}
 </div>

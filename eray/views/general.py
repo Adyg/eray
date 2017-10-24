@@ -11,6 +11,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 
 from eray.forms.content import (PostQuestion, PostAnswer, LoginForm, RegistrationForm, )
+from eray.forms.user import (NotificationForm, )
 from eray.models.content import (Tag, Question, Answer,)
 from eray.lib.eray_paginator import ErayPaginator
 
@@ -391,7 +392,6 @@ def profile(request, username):
 def subscriptions(request, username):
     """User subscriptions page
     """
-    print(username)
     user = get_object_or_404(User, username=username)
 
     subscribed_questions = user.profile.get_question_subscriptions()
@@ -401,4 +401,22 @@ def subscriptions(request, username):
         'user': user,
         'subscribed_questions': subscribed_questions,
         'subscribed_tags': subscribed_tags,
+    })
+
+@login_required
+def notifications(request, username):
+    """User notifications page
+    """
+    user = get_object_or_404(User, username=username)
+    notification_form = NotificationForm(instance=user)
+
+    if request.method == 'POST':
+        notification_form = NotificationForm(data=request.POST, instance=user)
+
+        if notification_form.is_valid():
+            notification_form.save()
+
+    return render(request, 'eray/notifications.html', {
+        'user': user,
+        'notification_form': notification_form,
     })

@@ -72,6 +72,9 @@ urlpatterns = [
     # user subscriptions
     url(r'^profile/(?P<username>[\w-]+)/subscriptions/$', eray_views.subscriptions, name='subscriptions'),
 
+    # user notifications
+    url(r'^profile/(?P<username>[\w-]+)/notifications/$', eray_views.notifications, name='notifications'),
+
     #subscribe
     url(r'^subscribe/question/(?P<question_pk>\d+)/$', content_views.subscribe_question, name='subscribe-question'),
     url(r'^subscribe/tag/(?P<tag_pk>\d+)/$', content_views.subscribe_tag, name='subscribe-tag'),

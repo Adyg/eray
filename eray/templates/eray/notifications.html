@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% load staticfiles achievements action_stream subscriptions %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 notifications-wrap">
+            <h1>Post an answer to this question</h1>
+            {% include 'partials/_messages.html' with form=notification_form %}
+            <form method="POST" novalidate>
+                {% csrf_token %}
+                {% if notification_form.non_field_errors %}
+                    <div class="notification error">{{ notification_form.non_field_errors }}</div>
+                {% endif %}
+
+                {% include 'eray/partials/forms/_formfield.html' with label='Instant' field=notification_form.notify_instant for='notify_instant' %}
+                {% include 'eray/partials/forms/_formfield.html' with label='Hourly' field=notification_form.notify_hourly for='notify_hourly' %}
+                {% include 'eray/partials/forms/_formfield.html' with label='Daily' field=notification_form.notify_daily for='notify_daily' %}
+                {% include 'eray/partials/forms/_formfield.html' with label='Weekly' field=notification_form.notify_weekly for='notify_weekly' %}
+                {% include 'eray/partials/forms/_formfield.html' with label='Comments' field=notification_form.notify_comment for='notify_comment' %}
+                {% include 'eray/partials/forms/_formfield.html' with label='Answers' field=notification_form.notify_answer for='notify_answer' %}
+               <button class="btn btn-primary" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
