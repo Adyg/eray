@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.dispatch import receiver
 
 from eray.models.content import (Question, BaseComment, Answer,)
-from eray.models.user import (UserActionStream, )
+from eray.models.user import (UserActionStream, Profile, )
 
 # Profile
 @receiver(post_save, sender=User)
