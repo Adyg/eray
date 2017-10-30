@@ -19,3 +19,4 @@ pysolr==3.2.0
 mistune==0.7.4
 django-seed==0.1.7
 python-slugify==1.2.4
+celery==4.1

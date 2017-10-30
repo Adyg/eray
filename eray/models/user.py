@@ -193,10 +193,18 @@ class UserNotificationStream(models.Model):
         ('NEW_QUESTION', 'NEW_QUESTION'),
     )
 
+    NOTIFICATION_STATUS = (
+        ('P', 'Pending'),
+        ('E', 'Sending'),
+        ('S', 'Sent'),
+        ('F', 'Failed'),
+    )
+
     user = models.ForeignKey(User)
     question = models.ForeignKey(Question, null=True, blank=True, on_delete=models.CASCADE)
     tag = models.ForeignKey(Tag, null=True, blank=True, on_delete=models.CASCADE)
     notification_type = models.CharField(max_length=50, choices=NOTIFICATION_TYPES)
+    notification_status = models.CharField(max_length=1, choices=NOTIFICATION_STATUS, default='P', db_index=True,)
 
 
 class ToggleableSubscription(models.Model):
