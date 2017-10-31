@@ -220,6 +220,8 @@ THIRD_PARTY_APPS = (
 
     # Seeder app, used for populating the db with random data
     'django_seed',
+
+    'celery'
 )
 
 # Apps specific for this project go here.
@@ -294,7 +296,7 @@ MESSAGE_TAGS = {
 }
 
 # Celery settings
-CELERY_BROKER_URL = 'amqp://user1:rabbitmq@localhost:15672/eray/'
+CELERY_BROKER_URL = 'amqp://user1:rabbitmq@localhost:5672/'
 CELERY_ACCEPT_CONTENT = ['json']
-CELERY_RESULT_BACKEND = 'db+sqlite:///results.sqlite'
+#CELERY_RESULT_BACKEND = 'db+sqlite:///results.sqlite'
 CELERY_TASK_SERIALIZER = 'json'

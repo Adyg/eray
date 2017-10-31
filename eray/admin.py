@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from eray.models.content import (Question, Tag, Vote, BaseVote, Answer, Comment, BaseComment, View, BaseView, )
 from eray.models.achievements import (Achievement, )
-from eray.models.user import (Profile, UserActionStream, UserSubscribedQuestion, UserSubscribedTag, )
+from eray.models.user import (Profile, UserActionStream, UserSubscribedQuestion, UserSubscribedTag, UserNotificationStream, )
 
 admin.site.register(Tag)
 admin.site.register(Question)
@@ -18,3 +18,4 @@ admin.site.register(Achievement)
 admin.site.register(UserActionStream)
 admin.site.register(UserSubscribedQuestion)
 admin.site.register(UserSubscribedTag)
+admin.site.register(UserNotificationStream)

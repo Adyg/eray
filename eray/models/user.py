@@ -182,6 +182,18 @@ class UserActionStream(models.Model):
 
     objects = UserActionStreamManager()
 
+    @classmethod
+    def handle_new_action(cls, **kwargs):
+        stream_item = False
+
+        # avoid duplicate notifications
+        try:
+            stream_item = cls.objects.get(**kwargs)
+        except:
+            stream_item = cls.objects.create(**kwargs)
+
+        return stream_item
+
 
 class UserNotificationStream(models.Model):
     """Notification log
@@ -192,6 +204,14 @@ class UserNotificationStream(models.Model):
         ('ANSWER_ACCEPTED', 'ANSWER_ACCEPTED'),
         ('NEW_QUESTION', 'NEW_QUESTION'),
     )
+
+    ACTION_TO_NOTIFICATION = {
+        'ASK': 'NEW_QUESTION',
+        'ANSWER': 'NEW_ANSWER',
+        'COMMENT': 'NEW_COMMENT',
+        'ACCEPTED': 'ANSWER_ACCEPTED',
+        'WAS_ACCEPTED': 'ANSWER_ACCEPTED',
+    }
 
     NOTIFICATION_STATUS = (
         ('P', 'Pending'),
@@ -206,6 +226,37 @@ class UserNotificationStream(models.Model):
     notification_type = models.CharField(max_length=50, choices=NOTIFICATION_TYPES)
     notification_status = models.CharField(max_length=1, choices=NOTIFICATION_STATUS, default='P', db_index=True,)
 
+    @classmethod
+    def notify_new_answer(cls, answer, action_type):
+        subscriptions = UserSubscribedQuestion.get_subscribers([answer.parent, ])
+
+        for subscription in subscriptions:
+            cls.add_notification(user=subscription.user,
+                                question=answer.parent,
+                                notification_type=cls.ACTION_TO_NOTIFICATION[action_type])
+
+    @classmethod
+    def notify_new_question(cls, question, action_type):
+        subscriptions = UserSubscribedTag.get_subscribers(question.tags.all())
+
+        for subscription in subscriptions:
+            cls.add_notification(user=subscription.user,
+                                question=question,
+                                tag=subscription.subscribed_obj,
+                                notification_type=cls.ACTION_TO_NOTIFICATION[action_type])
+
+    @classmethod
+    def add_notification(cls, **kwargs):
+        notification_item = False
+
+        # avoid duplicate notifications
+        try:
+            notification_item = cls.objects.get(**kwargs)
+        except:
+            notification_item = cls.objects.create(**kwargs)
+
+        return notification_item
+       
 
 class ToggleableSubscription(models.Model):
 
@@ -239,6 +290,16 @@ class ToggleableSubscription(models.Model):
 
         return self.objects.filter(user=user, subscribed_obj=subscribed_obj).exists()
 
+    @classmethod
+    def get_subscriptions(self, user):
+
+        return self.objects.filter(user=user).select_related('subscribed_obj')
+
+    @classmethod
+    def get_subscribers(self, subscribed_objs):
+
+        return self.objects.filter(subscribed_obj__in=subscribed_objs).select_related('user')
+
 
 class UserSubscribedQuestion(ToggleableSubscription):
     """Questions an User is subscribed to
@@ -246,19 +307,9 @@ class UserSubscribedQuestion(ToggleableSubscription):
     user = models.ForeignKey(User)
     subscribed_obj = models.ForeignKey(Question)
 
-    @classmethod
-    def get_subscriptions(self, user):
-
-        return self.objects.filter(user=user).select_related('subscribed_obj')
-
 
 class UserSubscribedTag(ToggleableSubscription):
     """Tags an User is subscribed to
     """
     user = models.ForeignKey(User)
     subscribed_obj = models.ForeignKey(Tag)
-
-    @classmethod
-    def get_subscriptions(self, user):
-
-        return self.objects.filter(user=user).select_related('subscribed_obj')
