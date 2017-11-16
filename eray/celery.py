@@ -6,7 +6,7 @@ from celery import Celery
 from celery.schedules import crontab
 
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'eray.settings.base')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'eray.settings.local')
 
 app = Celery('eray')
 

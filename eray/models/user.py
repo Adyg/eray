@@ -256,7 +256,21 @@ class UserNotificationStream(models.Model):
             notification_item = cls.objects.create(**kwargs)
 
         return notification_item
+
+    @classmethod
+    def update_status(cls, notifications_qs, status, **kwargs):
+        notifications_qs.update(notification_status=status)
        
+    @classmethod
+    def prepare_notification_batch_for_sending(cls, **kwargs):
+        NOTIFICATION_BATCH_SIZE = 10
+
+        notifications = cls.objects.filter(notification_status='P')[0:NOTIFICATION_BATCH_SIZE]
+        notification_pks = [notification.pk for notification in notifications]
+        cls.update_status(cls.objects.filter(pk__in=notification_pks), 'E')
+
+        return notifications
+
 
 class ToggleableSubscription(models.Model):
 
