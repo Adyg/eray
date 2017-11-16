@@ -63,7 +63,8 @@ class BasePointsAchievement():
         profile = vote_parent.user.profile
 
         # user meets the criteria for awarding the achievement
-        if profile.get_points() > cls.points_limit:
+        profile_points = profile.get_points()
+        if profile_points and profile_points > cls.points_limit:
             # achievement can be awarded multiple times or it was not yet awarded
             if cls.only_award_once or not profile.achievements.filter(pk=achievement.pk).exists():
                 profile.achievements.add(achievement)
