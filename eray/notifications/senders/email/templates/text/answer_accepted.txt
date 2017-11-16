@@ -1,0 +1,2 @@
+Hi {{ notification.user.username }}
+Answer accepted for {{ notification.question.title }}  {{ notification.question.get_link }}

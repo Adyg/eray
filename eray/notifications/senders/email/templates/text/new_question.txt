@@ -1,0 +1,2 @@
+Hi {{ notification.user.username }}
+A new question was posted {{ notification.question.title }} {{ notification.question.get_link }}

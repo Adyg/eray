@@ -4,6 +4,8 @@ import datetime
 
 from slugify import slugify
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Avg, Max, Min, Sum
 from django.utils import timezone
@@ -86,6 +88,20 @@ class BaseContent(models.Model):
             return { 'question': self }
 
         return { 'answer': self }
+
+    def get_link(self):
+        domain = Site.objects.get_current().domain
+        path = ''
+
+        if type(self) is Question:
+            path = reverse('question', kwargs={'slug': self.slug})
+        elif type(self) is Comment:
+            path = reverse('question', kwargs={'slug': self.parent.slug})
+
+        url = '//{domain}{path}'.format(domain=domain, path=path)
+
+        return url
+
 
 class AllTagManager(models.Manager):
     """

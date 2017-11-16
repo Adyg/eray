@@ -150,6 +150,7 @@ TEMPLATES = [
         'DIRS': [
             normpath(join(DJANGO_ROOT, 'templates')),
             normpath(join(SITE_ROOT, 'templates')),
+            normpath(join(SITE_ROOT, 'eray', 'notifications', 'senders', 'email', 'templates')),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

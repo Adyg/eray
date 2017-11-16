@@ -1,6 +1,6 @@
 from eray.models.content import (Question, )
 from eray.models.user import (Profile, UserNotificationStream, )
-from eray.notifications.senders.email_sender import EmailSender
+from eray.notifications.senders.email.email_sender import EmailSender
 
 class PeriodicNotifications():
     """Sends periodic notifications
@@ -17,6 +17,6 @@ class PeriodicNotifications():
         for notification in notifications:
             cls._notify_by_email(notification)
 
-
-    def _notify_by_email(notification):
+    @classmethod
+    def _notify_by_email(cls, notification):
         EmailSender.send_notification(notification)
